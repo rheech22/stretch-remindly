@@ -71,8 +71,8 @@ const StretchingGuide: React.FC = () => {
         
         <Progress 
           value={progress % 20 * 5} 
-          className="h-2 mb-6" 
-          indicatorClassName="bg-stretch-success animate-progress"
+          className="h-2 mb-6 animate-progress" 
+          indicatorColor="bg-stretch-success"
         />
       </CardContent>
       

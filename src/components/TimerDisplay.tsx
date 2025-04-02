@@ -40,8 +40,8 @@ const TimerDisplay: React.FC = () => {
         
         <Progress 
           value={progress} 
-          className="h-2 mb-6" 
-          indicatorClassName={`${isStretching ? 'bg-stretch-success' : 'bg-stretch-primary'} animate-progress`}
+          className="h-2 mb-6 animate-progress" 
+          indicatorColor={isStretching ? 'bg-stretch-success' : 'bg-stretch-primary'}
         />
         
         <div className="flex justify-center space-x-4 mt-4">
