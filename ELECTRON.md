@@ -72,10 +72,20 @@ You'll also need to install these additional dependencies:
 npm install electron-store concurrently wait-on electron-builder --save-dev
 ```
 
-And ensure electron-is-dev is installed as a production dependency:
+And ensure electron-is-dev is installed as a production dependency (not a dev dependency):
 ```
 npm install electron-is-dev
 ```
+
+## Important Note for Module Compatibility
+
+When building for production, make sure that:
+
+1. The main Electron process (main.js) uses CommonJS (`require()`) syntax
+2. Your preload script (preload.js) also uses CommonJS syntax
+3. Any dependencies used in the main process should be listed as regular dependencies, not devDependencies
+
+This helps avoid ESM/CommonJS compatibility issues that can cause errors like "ERR_UNSUPPORTED_ESM_URL_SCHEME".
 
 ## Icons
 
