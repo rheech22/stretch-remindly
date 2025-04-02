@@ -21,4 +21,8 @@ export default defineConfig(({ mode }) => ({
     },
   },
   base: './',  // This is important for Electron to resolve assets correctly
+  build: {
+    outDir: 'dist',
+    emptyOutDir: true
+  }
 }));

@@ -135,6 +135,12 @@ app.whenReady().then(() => {
   });
 });
 
+// For macOS
 app.on('window-all-closed', function () {
   if (process.platform !== 'darwin') app.quit();
+});
+
+// Make sure we don't quit when closing the window
+app.on('before-quit', () => {
+  app.isQuitting = true;
 });

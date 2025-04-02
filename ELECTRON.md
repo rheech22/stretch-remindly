@@ -40,6 +40,7 @@ Since the package.json file is read-only in this project, you'll need to manuall
   "electron:dev": "concurrently \"npm run dev\" \"wait-on http://localhost:8080 && electron electron/main.js\"",
   "electron:build": "npm run build && electron-builder"
 },
+"main": "electron/main.js",
 "build": {
   "appId": "com.stretchreminder.app",
   "productName": "Stretch Reminder",
