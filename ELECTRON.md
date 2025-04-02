@@ -60,13 +60,21 @@ Since the package.json file is read-only in this project, you'll need to manuall
   },
   "linux": {
     "target": "AppImage"
+  },
+  "extraMetadata": {
+    "main": "electron/main.js"
   }
 }
 ```
 
 You'll also need to install these additional dependencies:
 ```
-npm install concurrently wait-on electron-builder --save-dev
+npm install electron-store concurrently wait-on electron-builder --save-dev
+```
+
+And ensure electron-is-dev is installed as a production dependency:
+```
+npm install electron-is-dev
 ```
 
 ## Icons

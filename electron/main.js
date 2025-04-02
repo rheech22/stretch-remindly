@@ -1,8 +1,16 @@
 
 const { app, BrowserWindow, Tray, Menu, ipcMain, Notification } = require('electron');
 const path = require('path');
-const isDev = require('electron-is-dev');
 const Store = require('electron-store');
+
+// Handle electron-is-dev more gracefully
+let isDev = false;
+try {
+  isDev = require('electron-is-dev');
+} catch (e) {
+  // In production, electron-is-dev might not be available
+  isDev = false;
+}
 
 // Initialize settings store
 const store = new Store({
