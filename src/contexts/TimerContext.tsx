@@ -1,6 +1,13 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { 
+  isElectron, 
+  getElectronSettings, 
+  saveElectronSettings, 
+  showNativeNotification,
+  registerTimerListeners
+} from "@/utils/electronUtils";
 
 type TimerContextType = {
   workDuration: number;
@@ -31,6 +38,50 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const [isRunning, setIsRunning] = useState(false);
   const [isStretching, setIsStretching] = useState(false);
   const [progress, setProgress] = useState(0);
+
+  // Load settings from Electron if available
+  useEffect(() => {
+    const loadSettings = async () => {
+      if (isElectron()) {
+        const settings = await getElectronSettings();
+        if (settings) {
+          setWorkDuration(settings.workDuration);
+          setStretchDuration(settings.stretchDuration);
+        }
+      }
+    };
+    
+    loadSettings();
+  }, []);
+
+  // Save settings to Electron when they change
+  useEffect(() => {
+    const saveSettings = async () => {
+      if (isElectron()) {
+        await saveElectronSettings({
+          workDuration,
+          stretchDuration
+        });
+      }
+    };
+    
+    saveSettings();
+  }, [workDuration, stretchDuration]);
+
+  // Register system tray timer controls
+  useEffect(() => {
+    if (isElectron()) {
+      const { unsubscribeStart, unsubscribePause } = registerTimerListeners(
+        startTimer,
+        pauseTimer
+      );
+      
+      return () => {
+        unsubscribeStart();
+        unsubscribePause();
+      };
+    }
+  }, []);
 
   // Reset timer when duration changes
   useEffect(() => {
@@ -68,6 +119,15 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           description: "Your work session is complete. Let's do some stretching!",
           duration: 10000,
         });
+        
+        // Show native notification if in Electron
+        if (isElectron()) {
+          showNativeNotification(
+            "Time to stretch!", 
+            "Your work session is complete. Let's do some stretching!"
+          );
+        }
+        
         setIsStretching(true);
         setRemainingTime(stretchDuration * 60);
         setProgress(0);
@@ -78,6 +138,15 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({ childre
           description: "Great job! Your work timer is restarting.",
           duration: 5000,
         });
+        
+        // Show native notification if in Electron
+        if (isElectron()) {
+          showNativeNotification(
+            "Stretching complete!", 
+            "Great job! Your work timer is restarting."
+          );
+        }
+        
         setIsStretching(false);
         setRemainingTime(workDuration * 60);
         setProgress(0);
