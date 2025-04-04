@@ -53,16 +53,12 @@ const createWindow = (): void => {
       contextIsolation: true,
     },
     // Modern window styling
-    frame: false, // Frameless window
-    titleBarStyle: 'hidden',
-    transparent: false, // Not using full transparency for better performance
-    backgroundColor: '#0a0a2a', // Dark background matching our cyberpunk theme
-    vibrancy: 'under-window', // macOS vibrancy effect
-    visualEffectState: 'active',
+    titleBarStyle: "hidden",
+    //vibrancy: "under-window",
+    visualEffectState: "active",
     roundedCorners: true,
     hasShadow: true,
     resizable: false, // Disable resizing
-    // show: false
   });
 
   if (isDev && process.env.VITE_DEV_SERVER_URL) {
@@ -121,7 +117,10 @@ const createTray = (): void => {
           createWindow();
         } else {
           // Show the window if it's hidden or minimized
-          if (mainWindow && (!mainWindow.isVisible() || mainWindow.isMinimized())) {
+          if (
+            mainWindow &&
+            (!mainWindow.isVisible() || mainWindow.isMinimized())
+          ) {
             mainWindow.restore(); // Restore if minimized
             mainWindow.show(); // Show if hidden
             mainWindow.focus(); // Bring to front
@@ -163,31 +162,31 @@ app.on("window-all-closed", () => {
 });
 
 // IPC handlers
-ipcMain.handle('get-settings', () => {
+ipcMain.handle("get-settings", () => {
   return {
-    workDuration: store.get('workDuration'),
-    stretchDuration: store.get('stretchDuration'),
-    startMinimized: store.get('startMinimized'),
-    runAtStartup: store.get('runAtStartup'),
+    workDuration: store.get("workDuration"),
+    stretchDuration: store.get("stretchDuration"),
+    startMinimized: store.get("startMinimized"),
+    runAtStartup: store.get("runAtStartup"),
   };
 });
 
-ipcMain.handle('save-settings', (_, settings: Partial<Settings>) => {
+ipcMain.handle("save-settings", (_, settings: Partial<Settings>) => {
   try {
     if (settings.workDuration !== undefined) {
-      store.set('workDuration', settings.workDuration);
+      store.set("workDuration", settings.workDuration);
     }
     if (settings.stretchDuration !== undefined) {
-      store.set('stretchDuration', settings.stretchDuration);
+      store.set("stretchDuration", settings.stretchDuration);
     }
     if (settings.startMinimized !== undefined) {
-      store.set('startMinimized', settings.startMinimized);
+      store.set("startMinimized", settings.startMinimized);
     }
     if (settings.runAtStartup !== undefined) {
-      store.set('runAtStartup', settings.runAtStartup);
+      store.set("runAtStartup", settings.runAtStartup);
       app.setLoginItemSettings({
         openAtLogin: settings.runAtStartup,
-        openAsHidden: store.get('startMinimized'),
+        openAsHidden: store.get("startMinimized"),
       });
     }
     return true;
@@ -198,50 +197,53 @@ ipcMain.handle('save-settings', (_, settings: Partial<Settings>) => {
 });
 
 // Window control handlers
-ipcMain.on('minimize-window', () => {
+ipcMain.on("minimize-window", () => {
   if (mainWindow) {
     mainWindow.minimize();
   }
 });
 
-ipcMain.on('close-window', () => {
+ipcMain.on("close-window", () => {
   if (mainWindow) {
     mainWindow.close();
   }
 });
 
-ipcMain.on("show-notification", (_event, { title, body }: { title: string, body: string }) => {
-  log.info(`[IPC] Received show-notification: ${title} - ${body}`);
-  if (Notification.isSupported()) {
-    const notification = new Notification({ title, body });
-    notification.show();
-    log.info(`[Notification] Showing notification: ${title}`);
+ipcMain.on(
+  "show-notification",
+  (_event, { title, body }: { title: string; body: string }) => {
+    log.info(`[IPC] Received show-notification: ${title} - ${body}`);
+    if (Notification.isSupported()) {
+      const notification = new Notification({ title, body });
+      notification.show();
+      log.info(`[Notification] Showing notification: ${title}`);
 
-    // Also bring the window to front if needed
-    if (mainWindow && (!mainWindow.isVisible() || mainWindow.isMinimized())) {
-      log.info('[Window] Restoring/Showing window on notification.');
-      mainWindow.restore();
-      mainWindow.show();
-      mainWindow.focus();
-    } else if (mainWindow && !mainWindow.isFocused()) {
-      log.info('[Window] Focusing window on notification.');
-      mainWindow.focus(); // Bring to front even if visible but not focused
+      // Also bring the window to front if needed
+      if (mainWindow && (!mainWindow.isVisible() || mainWindow.isMinimized())) {
+        log.info("[Window] Restoring/Showing window on notification.");
+        mainWindow.restore();
+        mainWindow.show();
+        mainWindow.focus();
+      } else if (mainWindow && !mainWindow.isFocused()) {
+        log.info("[Window] Focusing window on notification.");
+        mainWindow.focus(); // Bring to front even if visible but not focused
+      }
+    } else {
+      log.warn("[Notification] Notifications not supported on this system.");
     }
-  } else {
-    log.warn("[Notification] Notifications not supported on this system.");
-  }
-});
+  },
+);
 
 // Handle request to show the main window
 ipcMain.on("show-window", () => {
-  log.info('[IPC] Received show-window');
+  log.info("[IPC] Received show-window");
   if (mainWindow) {
     if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
-       log.info('[Window] Restoring/Showing window.');
+      log.info("[Window] Restoring/Showing window.");
       mainWindow.restore();
       mainWindow.show();
     }
-    log.info('[Window] Focusing window.');
+    log.info("[Window] Focusing window.");
     mainWindow.focus(); // Ensure it gets focus
   }
 });

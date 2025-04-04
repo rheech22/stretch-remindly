@@ -1,10 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useTimer } from "@/contexts/TimerContext";
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from 'react-router-dom';
-import { isElectron, getElectronSettings, saveElectronSettings } from "@/utils/electronUtils";
+import { useNavigate } from "react-router-dom";
+import {
+  isElectron,
+  getElectronSettings,
+  saveElectronSettings,
+} from "@/utils/electronUtils";
 import { Save, Clock, Activity } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -19,8 +23,10 @@ const TimerSettings: React.FC = () => {
     isRunning,
   } = useTimer();
 
-  const [workDurationInput, setWorkDurationInput] = useState<number>(workDuration);
-  const [stretchDurationInput, setStretchDurationInput] = useState<number>(stretchDuration);
+  const [workDurationInput, setWorkDurationInput] =
+    useState<number>(workDuration);
+  const [stretchDurationInput, setStretchDurationInput] =
+    useState<number>(stretchDuration);
 
   useEffect(() => {
     const loadCurrentSettings = async () => {
@@ -56,17 +62,17 @@ const TimerSettings: React.FC = () => {
         if (success) {
           setWorkDuration(newWorkDuration / 60);
           setStretchDuration(newStretchDuration / 60);
-          
+
           // Show success toast
           toast({
             title: "Settings Saved",
             description: "Your timer settings have been updated successfully.",
             variant: "default",
           });
-          
+
           // Navigate back to main screen
           setTimeout(() => {
-            navigate('/');
+            navigate("/");
           }, 500);
         }
       } catch (error) {
@@ -103,15 +109,22 @@ const TimerSettings: React.FC = () => {
         {/* Work Duration Slider */}
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <Label htmlFor="work-duration" className="text-sm font-bold uppercase tracking-wider flex items-center gap-2">
+            <Label
+              htmlFor="work-duration"
+              className="text-sm font-bold uppercase tracking-wider flex items-center gap-2"
+            >
               <Clock className="h-4 w-4 text-secondary" />
-              <span className="text-secondary">Work Duration:</span> 
-              <span className="text-primary font-['Orbitron'] text-lg ml-1">{workDurationInput}</span> 
-              <span className="text-xs text-muted-foreground ml-1">minutes</span>
+              <span className="text-secondary">Work Duration:</span>
+              <span className="text-primary font-['Orbitron'] text-lg ml-1">
+                {workDurationInput}
+              </span>
+              <span className="text-xs text-muted-foreground ml-1">
+                minutes
+              </span>
             </Label>
           </div>
-          
-          <div className="relative pt-2 pb-6">
+
+          <div className="relative pt-2 pb-6 no-drag">
             <Slider
               id="work-duration"
               min={1}
@@ -135,15 +148,22 @@ const TimerSettings: React.FC = () => {
         {/* Stretch Duration Slider */}
         <div className="space-y-4">
           <div className="flex justify-between items-center">
-            <Label htmlFor="stretch-duration" className="text-sm font-bold uppercase tracking-wider flex items-center gap-2">
+            <Label
+              htmlFor="stretch-duration"
+              className="text-sm font-bold uppercase tracking-wider flex items-center gap-2"
+            >
               <Activity className="h-4 w-4 text-accent" />
-              <span className="text-accent">Stretch Duration:</span> 
-              <span className="text-primary font-['Orbitron'] text-lg ml-1">{stretchDurationInput}</span> 
-              <span className="text-xs text-muted-foreground ml-1">minutes</span>
+              <span className="text-accent">Stretch Duration:</span>
+              <span className="text-primary font-['Orbitron'] text-lg ml-1">
+                {stretchDurationInput}
+              </span>
+              <span className="text-xs text-muted-foreground ml-1">
+                minutes
+              </span>
             </Label>
           </div>
-          
-          <div className="relative pt-2 pb-6">
+
+          <div className="relative pt-2 pb-6 no-drag">
             <Slider
               id="stretch-duration"
               min={1}
@@ -164,9 +184,9 @@ const TimerSettings: React.FC = () => {
         </div>
 
         {/* Save Button with cyberpunk styling */}
-        <Button 
-          onClick={handleSave} 
-          className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-md border border-white/20 shadow-md transition-all duration-300 uppercase tracking-wider font-['Orbitron'] group"
+        <Button
+          onClick={handleSave}
+          className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-md border border-white/20 shadow-md transition-all duration-300 uppercase tracking-wider font-['Orbitron'] group no-drag"
           disabled={isRunning}
         >
           <Save className="mr-2 h-4 w-4 group-hover:animate-pulse" />

@@ -9,7 +9,7 @@ import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const Index = () => {
-  const { isStretching } = useTimer();
+  const { isStretching, isRunning } = useTimer();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,17 +29,19 @@ const Index = () => {
           <TimerControls />
         </div>
         
-        {/* Settings Button */}
-        <div className="absolute top-4 right-4">
-          <Button 
-            onClick={() => navigate('/settings')} 
-            variant="ghost" 
-            size="icon"
-            className="rounded-full w-12 h-12 border border-primary/30 hover:border-primary/60 transition-all duration-300 bg-transparent"
-          >
-            <Settings className="h-6 w-6 text-primary" />
-          </Button>
-        </div>
+        {/* Settings Button - only show when timer is not running */}
+        {!isRunning && (
+          <div className="absolute bottom-4 right-4 no-drag">
+            <Button 
+              onClick={() => navigate('/settings')} 
+              variant="ghost" 
+              size="icon"
+              className="rounded-full w-12 h-12 border border-primary/30 hover:border-primary/60 transition-all duration-300 bg-transparent"
+            >
+              <Settings className="h-6 w-6 text-primary" />
+            </Button>
+          </div>
+        )}
       </div>
     </TimerProvider>
   );

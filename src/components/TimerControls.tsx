@@ -44,22 +44,24 @@ const TimerControls: React.FC = () => {
           )}
         </Button>
 
-        {/* Reset Button */}
-        <Button
-          onClick={resetTimer}
-          className="
-            w-12 h-12 rounded-full 
-            bg-transparent hover:bg-secondary/10
-            text-secondary font-bold
-            border-2 border-secondary
-            shadow-md
-            transition-all duration-300 ease-in-out
-            flex items-center justify-center
-          "
-          aria-label="Reset Timer"
-        >
-          <RefreshCw className="w-6 h-6" />
-        </Button>
+        {/* Reset Button - only show in work mode */}
+        {isRunning && (
+          <Button
+            onClick={resetTimer}
+            className="
+              w-12 h-12 rounded-full 
+              bg-transparent hover:bg-secondary/10
+              text-secondary font-bold
+              border-2 border-secondary
+              shadow-md
+              transition-all duration-300 ease-in-out
+              flex items-center justify-center
+            "
+            aria-label="Reset Timer"
+          >
+            <RefreshCw className="w-6 h-6" />
+          </Button>
+        )}
       </div>
 
       {/* Status text with cyberpunk styling */}

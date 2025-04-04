@@ -23,7 +23,7 @@ const App = () => (
         <TitleBar />
 
         {/* Main content area - with cyberpunk styling */}
-        <main className="flex-grow flex flex-col items-center justify-center p-8 space-y-8 bg-gradient-to-b from-background via-background/95 to-background/90 no-drag">
+        <main className="flex-grow flex flex-col items-center justify-center p-8 space-y-8 bg-gradient-to-b from-background via-background/95 to-background/90">
           <HashRouter>
             <Routes>
               <Route path="/" element={<Index />} />

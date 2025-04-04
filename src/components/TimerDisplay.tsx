@@ -1,17 +1,10 @@
 import React from "react";
 import { useTimer } from "@/contexts/TimerContext";
-import { Button } from "@/components/ui/button";
-import { RotateCcw, Play, Pause } from "lucide-react";
 
 const TimerDisplay: React.FC = () => {
   const {
     remainingTime,
-    isRunning,
     isStretching,
-    startTimer,
-    pauseTimer,
-    resetTimer,
-    progress,
   } = useTimer();
 
   // Format time as MM:SS
