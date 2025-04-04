@@ -1,4 +1,3 @@
-
 export interface ElectronAPI {
   getSettings: () => Promise<{
     workDuration: number;
@@ -12,7 +11,10 @@ export interface ElectronAPI {
     startMinimized?: boolean;
     runAtStartup?: boolean;
   }) => Promise<boolean>;
-  showNotification: (options: { title: string; body: string }) => Promise<boolean>;
+  showNotification: (options: {
+    title: string;
+    body: string;
+  }) => Promise<boolean>;
   onStartTimer: (callback: () => void) => () => void;
   onPauseTimer: (callback: () => void) => () => void;
 }

@@ -1,7 +1,6 @@
-
 // Check if running in Electron
 export const isElectron = (): boolean => {
-  return window && 'electron' in window;
+  return window && "electron" in window;
 };
 
 // Get settings from Electron store
@@ -30,12 +29,13 @@ export const showNativeNotification = async (title: string, body: string) => {
 // Register event listeners for timer controls from system tray
 export const registerTimerListeners = (
   startCallback: () => void,
-  pauseCallback: () => void
+  pauseCallback: () => void,
 ) => {
-  if (!isElectron()) return { unsubscribeStart: () => {}, unsubscribePause: () => {} };
-  
+  if (!isElectron())
+    return { unsubscribeStart: () => {}, unsubscribePause: () => {} };
+
   const unsubscribeStart = window.electron.onStartTimer(startCallback);
   const unsubscribePause = window.electron.onPauseTimer(pauseCallback);
-  
+
   return { unsubscribeStart, unsubscribePause };
 };

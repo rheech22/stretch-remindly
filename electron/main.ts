@@ -11,7 +11,7 @@ import {
   Event,
 } from "electron";
 import path from "path";
-import log from "electron-log/main"; // electron-log 임포트
+import log from "electron-log/main";
 
 log.initialize();
 
@@ -29,7 +29,7 @@ const createWindow = (): void => {
       nodeIntegration: false,
       contextIsolation: true,
     },
-    // 'show: false' was removed here
+    // show: false
   });
 
   if (isDev && process.env.VITE_DEV_SERVER_URL) {

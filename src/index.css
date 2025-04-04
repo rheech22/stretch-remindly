@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -81,11 +80,11 @@
   .timer-button {
     @apply h-12 w-12 rounded-full flex items-center justify-center transition-all hover:bg-accent;
   }
-  
+
   .animation-wave {
     animation: wave 1.5s infinite;
   }
-  
+
   .animate-progress {
     transition: width 1s linear;
   }
