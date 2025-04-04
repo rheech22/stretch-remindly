@@ -62,10 +62,9 @@ const createTray = (): void => {
 
   let icon: NativeImage;
   try {
-    icon = nativeImage.createFromPath(iconPath);
-    if (process.platform === "darwin" && icon) {
-      icon = icon.resize({ width: 16, height: 16 });
-    }
+    icon = nativeImage
+      .createFromPath(iconPath)
+      .resize({ width: 16, height: 16 });
   } catch (error) {
     log.error(`[Tray] Failed to load tray icon from ${iconPath}:`, error);
     icon = nativeImage.createEmpty();
@@ -82,7 +81,7 @@ const createTray = (): void => {
 
   const contextMenuTemplate: MenuItemConstructorOptions[] = [
     {
-      label: "Show App",
+      label: "Open Stretch Remindly",
       click: () => {
         mainWindow?.show();
       },
@@ -99,10 +98,6 @@ const createTray = (): void => {
 
   tray.setToolTip("Stretch Remindly");
   tray.setContextMenu(contextMenu);
-
-  tray.on("click", () => {
-    mainWindow?.show();
-  });
 };
 
 app.whenReady().then(() => {
