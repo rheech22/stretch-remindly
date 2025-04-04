@@ -1,9 +1,10 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext, useRef, useCallback } from "react";
 import { toast } from "@/components/ui/use-toast";
+import { Settings } from "@/types/electron"; 
 import {
   isElectron,
-  getElectronSettings,
-  saveElectronSettings,
+  getElectronSettings, 
+  saveElectronSettings, 
   showNativeNotification,
   registerTimerListeners,
   showMainWindow,
@@ -34,66 +35,96 @@ const TimerContext = createContext<TimerContextType | undefined>(undefined);
 export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [workDuration, setWorkDuration] = useState(defaultWorkDuration);
-  const [stretchDuration, setStretchDuration] = useState(
-    defaultStretchDuration,
-  );
-  const [remainingTime, setRemainingTime] = useState(workDuration * 60); // in seconds
-  const [isRunning, setIsRunning] = useState(false);
-  const [isStretching, setIsStretching] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [workDuration, setWorkDurationState] = useState<number>(defaultWorkDuration * 60);
+  const [stretchDuration, setStretchDurationState] = useState<number>(defaultStretchDuration * 60);
+  const [remainingTime, setRemainingTime] = useState<number>(workDuration);
+  const [isRunning, setIsRunning] = useState<boolean>(false);
+  const [isStretching, setIsStretching] = useState<boolean>(false);
+  const [progress, setProgress] = useState<number>(0);
 
-  // Load settings from Electron if available
-  useEffect(() => {
-    const loadSettings = async () => {
-      if (isElectron()) {
-        const settings = await getElectronSettings();
-        if (settings) {
-          setWorkDuration(settings.workDuration);
-          setStretchDuration(settings.stretchDuration);
-        }
+  // Function to load settings and initialize state
+  const initializeSettings = useCallback(async () => {
+    if (isElectron()) {
+      const loadedSettings = await getElectronSettings();
+      console.log("Loaded settings in context:", loadedSettings);
+      setWorkDurationState(loadedSettings.workDuration);
+      setStretchDurationState(loadedSettings.stretchDuration);
+      // Set initial remaining time based on loaded work duration
+      // Only reset if timer is not currently running to avoid disrupting active session
+      if (!isRunning) {
+        setRemainingTime(loadedSettings.workDuration);
+        setProgress(0); // Reset progress as well
       }
-    };
+    }
+  }, [isRunning]); // Depend on isRunning to avoid resetting active timer
 
-    loadSettings();
+  // Load settings when the component mounts
+  useEffect(() => {
+    initializeSettings();
+  }, [initializeSettings]);
+
+  // Update remaining time when workDuration changes (and timer isn't running)
+  useEffect(() => {
+    if (!isRunning) {
+      setRemainingTime(workDuration);
+      setProgress(0); // Ensure progress resets too
+    }
+  }, [workDuration, isRunning]);
+
+  // Function to save settings (used by setters)
+  const saveSettings = useCallback(async (newSettings: Partial<Settings>) => {
+    if (isElectron()) {
+      await saveElectronSettings(newSettings);
+    }
   }, []);
 
-  // Save settings to Electron when they change
-  useEffect(() => {
-    const saveSettings = async () => {
-      if (isElectron()) {
-        await saveElectronSettings({
-          workDuration,
-          stretchDuration,
-        });
-      }
-    };
+  // Setter for work duration that also saves
+  const setWorkDuration = useCallback(
+    (minutes: number) => {
+      setWorkDurationState(minutes * 60);
+      saveSettings({ workDuration: minutes * 60 });
+    },
+    [saveSettings],
+  );
 
-    saveSettings();
-  }, [workDuration, stretchDuration]);
+  // Setter for stretch duration that also saves
+  const setStretchDuration = useCallback(
+    (minutes: number) => {
+      setStretchDurationState(minutes * 60);
+      saveSettings({ stretchDuration: minutes * 60 });
+    },
+    [saveSettings],
+  );
+
+  const startTimer = useCallback(() => {
+    setIsRunning(true);
+  }, []);
+
+  const pauseTimer = useCallback(() => {
+    setIsRunning(false);
+  }, []);
 
   // Register system tray timer controls
   useEffect(() => {
+    let unsubscribe = () => {}; // Initialize with a no-op function
     if (isElectron()) {
-      const { unsubscribeStart, unsubscribePause } = registerTimerListeners(
-        startTimer,
-        pauseTimer,
-      );
-
-      return () => {
-        unsubscribeStart();
-        unsubscribePause();
-      };
+      // registerTimerListeners now returns a single unsubscribe function
+      unsubscribe = registerTimerListeners(startTimer, pauseTimer);
     }
-  }, []);
+
+    // Cleanup function for useEffect
+    return () => {
+      unsubscribe(); // Call the single unsubscribe function
+    };
+  }, [startTimer, pauseTimer]); // Dependencies: startTimer and pauseTimer callbacks
 
   // Reset timer when duration changes
   useEffect(() => {
     if (!isRunning) {
       if (!isStretching) {
-        setRemainingTime(workDuration * 60);
+        setRemainingTime(workDuration);
       } else {
-        setRemainingTime(stretchDuration * 60);
+        setRemainingTime(stretchDuration);
       }
     }
   }, [workDuration, stretchDuration, isRunning, isStretching]);
@@ -109,8 +140,8 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
 
           // Calculate progress percentage
           const totalDuration = isStretching
-            ? stretchDuration * 60
-            : workDuration * 60;
+            ? stretchDuration
+            : workDuration;
           const newProgress = ((totalDuration - newTime) / totalDuration) * 100;
           setProgress(newProgress);
 
@@ -137,7 +168,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
         }
 
         setIsStretching(true);
-        setRemainingTime(stretchDuration * 60);
+        setRemainingTime(stretchDuration);
         setProgress(0);
       } else {
         // Stretching completed, reset to work timer
@@ -158,7 +189,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
         }
 
         setIsStretching(false);
-        setRemainingTime(workDuration * 60);
+        setRemainingTime(workDuration);
         setProgress(0);
       }
     }
@@ -166,14 +197,10 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
     return () => clearInterval(interval);
   }, [isRunning, remainingTime, isStretching, stretchDuration, workDuration]);
 
-  const startTimer = () => setIsRunning(true);
-
-  const pauseTimer = () => setIsRunning(false);
-
   const resetTimer = () => {
     setIsRunning(false);
     setIsStretching(false);
-    setRemainingTime(workDuration * 60);
+    setRemainingTime(workDuration);
     setProgress(0);
   };
 
@@ -190,14 +217,14 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const skipToStretching = () => {
     setIsStretching(true);
-    setRemainingTime(stretchDuration * 60);
+    setRemainingTime(stretchDuration);
     setProgress(0);
     setIsRunning(true);
   };
 
   const completeStretching = () => {
     setIsStretching(false);
-    setRemainingTime(workDuration * 60);
+    setRemainingTime(workDuration);
     setProgress(0);
     setIsRunning(true);
     toast({
@@ -209,9 +236,9 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <TimerContext.Provider
       value={{
-        workDuration,
+        workDuration: workDuration / 60,
         setWorkDuration,
-        stretchDuration,
+        stretchDuration: stretchDuration / 60,
         setStretchDuration,
         remainingTime,
         isRunning,

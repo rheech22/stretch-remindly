@@ -3346,8 +3346,8 @@ packages:
     resolution: {integrity: sha512-34R7HTnG0XIJcBSn5XhDd7nNFPRcXYRZrBB2O2jdKqYODldSzBAqzsWoZYYvduky73toYS/ESqxPvkDf/F0XMg==}
     engines: {node: '>=10'}
 
-  type-fest@4.39.0:
-    resolution: {integrity: sha512-w2IGJU1tIgcrepg9ZJ82d8UmItNQtOFJG0HCUE3SzMokKkTsruVDALl2fAdiEzJlfduoU+VyXJWIIUZ+6jV+nw==}
+  type-fest@4.39.1:
+    resolution: {integrity: sha512-uW9qzd66uyHYxwyVBYiwS4Oi0qZyUqwjU+Oevr6ZogYiXt99EOYtwvzMSLw1c3lYo2HzJsep/NB23iEVEgjG/w==}
     engines: {node: '>=16'}
 
   typescript-eslint@8.29.0:
@@ -5393,7 +5393,7 @@ snapshots:
 
   dot-prop@9.0.0:
     dependencies:
-      type-fest: 4.39.0
+      type-fest: 4.39.1
 
   dotenv-expand@5.1.0: {}
 
@@ -5455,7 +5455,7 @@ snapshots:
   electron-store@10.0.1:
     dependencies:
       conf: 13.1.0
-      type-fest: 4.39.0
+      type-fest: 4.39.1
 
   electron-to-chromium@1.5.129: {}
 
@@ -6743,7 +6743,7 @@ snapshots:
   type-fest@0.13.1:
     optional: true
 
-  type-fest@4.39.0: {}
+  type-fest@4.39.1: {}
 
   typescript-eslint@8.29.0(eslint@9.23.0(jiti@1.21.7))(typescript@5.8.2):
     dependencies:

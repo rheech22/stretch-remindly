@@ -1,0 +1,21 @@
+{
+  // Inherit settings if you have a base tsconfig.json, otherwise define necessary options
+  // "extends": "./tsconfig.json",
+  "compilerOptions": {
+    // --- Key changes for Preload ---
+    "module": "CommonJS",         // Compile to CommonJS
+    "moduleResolution": "Node", // Node resolution for CommonJS
+
+    // --- Options likely needed (copy from tsconfig.electron.json or base) ---
+    "target": "ES2022",
+    "lib": ["ES2023", "DOM"], // Add DOM for preload environment
+    "outDir": "./dist-electron", // Output to the same directory
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "skipLibCheck": true
+     // Remove moduleDetection if not applicable/needed for CJS
+  },
+  "include": ["electron/preload.ts"], // IMPORTANT: Only include preload.ts
+  "exclude": ["node_modules"]
+}

@@ -1,22 +1,41 @@
-import { contextBridge, ipcRenderer } from "electron/renderer";
+import { contextBridge, ipcRenderer } from 'electron';
 
-contextBridge.exposeInMainWorld("electron", {
-  getSettings: () => ipcRenderer.invoke("get-settings"),
-  saveSettings: (settings: unknown) =>
-    ipcRenderer.invoke("save-settings", settings),
-  // Pass title and body correctly
-  showNotification: ({ title, body }: { title: string; body: string }) => 
-    ipcRenderer.send("show-notification", { title, body }), // Use send for one-way notification
-  // Add function to request showing the window
-  showWindow: () => ipcRenderer.send("show-window"), 
+// Define the types for the exposed API more precisely
+interface ElectronAPI {
+  getSettings: () => Promise<any>; // Will be refined in electron.d.ts
+  saveSettings: (settings: any) => Promise<boolean>; // Will be refined in electron.d.ts
+  showNotification: (options: { title: string; body: string }) => void;
+  showWindow: () => void;
+  onStartTimer: (callback: () => void) => () => void;
+  onPauseTimer: (callback: () => void) => () => void;
+}
+
+contextBridge.exposeInMainWorld('electron', {
+  getSettings: () => ipcRenderer.invoke('get-settings'),
+  saveSettings: (settings: any) => ipcRenderer.invoke('save-settings', settings),
+  showNotification: (options: { title: string; body: string }) => {
+    console.log('preload: Sending show-notification', options);
+    ipcRenderer.send('show-notification', options);
+  },
+  showWindow: () => {
+    console.log('preload: Sending show-window');
+    ipcRenderer.send('show-window');
+  },
+  // Example listeners (if needed, ensure they are correctly set up in main.ts)
   onStartTimer: (callback: () => void) => {
-    const listener = () => callback(); // Store listener to remove specific instance
-    ipcRenderer.on("start-timer", listener);
-    return () => ipcRenderer.removeListener("start-timer", listener); // Remove specific listener
+    const handler = () => callback();
+    ipcRenderer.on('start-timer', handler);
+    // Return an unsubscribe function
+    return () => {
+      ipcRenderer.removeListener('start-timer', handler);
+    };
   },
   onPauseTimer: (callback: () => void) => {
-    const listener = () => callback(); // Store listener to remove specific instance
-    ipcRenderer.on("pause-timer", listener);
-    return () => ipcRenderer.removeListener("pause-timer", listener); // Remove specific listener
+    const handler = () => callback();
+    ipcRenderer.on('pause-timer', handler);
+    // Return an unsubscribe function
+    return () => {
+      ipcRenderer.removeListener('pause-timer', handler);
+    };
   },
-});
+} as ElectronAPI); // Cast to the defined interface

@@ -10,8 +10,28 @@ import {
   NativeImage,
   Event,
 } from "electron";
-import path from "path";
-import log from "electron-log/main";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import log from "electron-log"; // Revert back to just 'electron-log'
+import Store from "electron-store"; // Revert back to import
+
+// Define the shape of the settings object
+interface Settings {
+  workDuration: number;
+  stretchDuration: number;
+  startMinimized: boolean;
+  runAtStartup: boolean;
+}
+
+// Initialize electron-store with defaults
+const store: Store<Settings> = new Store<Settings>({
+  defaults: {
+    workDuration: 25 * 60, // Default 25 minutes
+    stretchDuration: 5 * 60, // Default 5 minutes
+    startMinimized: false,
+    runAtStartup: false,
+  },
+});
 
 log.initialize();
 
@@ -20,12 +40,15 @@ let mainWindow: BrowserWindow | null = null;
 let tray: Tray | null = null;
 let isQuitting = false;
 
+// Get the directory name using import.meta.url
+const currentDir = path.dirname(fileURLToPath(import.meta.url));
+
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
-      preload: path.join(__dirname, "preload.js"),
+      preload: path.join(currentDir, "preload.js"), // Use currentDir
       nodeIntegration: false,
       contextIsolation: true,
     },
@@ -36,7 +59,8 @@ const createWindow = (): void => {
     mainWindow.loadURL(process.env.VITE_DEV_SERVER_URL);
     mainWindow.webContents.openDevTools();
   } else {
-    const indexPath = path.join(__dirname, "../dist/index.html");
+    // Use currentDir to build the path to index.html
+    const indexPath = path.join(currentDir, "../dist/index.html");
     mainWindow.loadFile(indexPath);
   }
 
@@ -55,7 +79,7 @@ const createWindow = (): void => {
 const createTray = (): void => {
   const iconName = "iconTemplate.png";
   const iconPath = isDev
-    ? path.join(__dirname, "../dist", iconName)
+    ? path.join(currentDir, "../dist", iconName)
     : path.join(process.resourcesPath, iconName);
 
   log.info(`[Tray] Attempting to load tray icon from: ${iconPath}`);
@@ -125,6 +149,47 @@ app.whenReady().then(() => {
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
+  }
+});
+
+// Handle get-settings event from renderer process
+ipcMain.handle("get-settings", async (): Promise<Partial<Settings>> => {
+  try {
+    // Retrieve all settings and log them immediately
+    const workDuration = store.get("workDuration");
+    const stretchDuration = store.get("stretchDuration");
+    const startMinimized = store.get("startMinimized");
+    const runAtStartup = store.get("runAtStartup");
+
+    log.info(`[IPC] Retrieved from store - workDuration: ${workDuration} (type: ${typeof workDuration})`);
+    log.info(`[IPC] Retrieved from store - stretchDuration: ${stretchDuration} (type: ${typeof stretchDuration})`);
+    log.info(`[IPC] Retrieved from store - startMinimized: ${startMinimized}`);
+    log.info(`[IPC] Retrieved from store - runAtStartup: ${runAtStartup}`);
+
+    const settings: Partial<Settings> = {
+      workDuration: workDuration,
+      stretchDuration: stretchDuration,
+      startMinimized: startMinimized,
+      runAtStartup: runAtStartup,
+    };
+    // log.info("[IPC] Returning settings:", settings); // Keep this log if needed
+    return settings;
+  } catch (error) {
+    log.error("[IPC] Error getting settings:", error);
+    return {};
+  }
+});
+
+// Handle save-settings event from renderer process
+ipcMain.handle("save-settings", async (event, settings: Partial<Settings>) => {
+  try {
+    // Use store.set() to save partial settings (it handles merging)
+    store.set(settings);
+    // console.log('Settings saved via store.set()', store.get()); // Optional: Log all saved settings
+    return true; // Indicate success
+  } catch (error) {
+    console.error("Failed to save settings:", error);
+    return false; // Indicate failure
   }
 });
 

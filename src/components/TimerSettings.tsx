@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { useTimer } from "@/contexts/TimerContext";
 import { Label } from "@/components/ui/label";
+import { isElectron, getElectronSettings, saveElectronSettings } from "@/utils/electronUtils";
 
 const TimerSettings: React.FC = () => {
   const {
@@ -13,12 +14,56 @@ const TimerSettings: React.FC = () => {
     isRunning,
   } = useTimer();
 
+  const [workDurationInput, setWorkDurationInput] = useState<number>(workDuration);
+  const [stretchDurationInput, setStretchDurationInput] = useState<number>(stretchDuration);
+
+  useEffect(() => {
+    const loadCurrentSettings = async () => {
+      if (isElectron()) {
+        try {
+          const settings = await getElectronSettings();
+          setWorkDurationInput(settings.workDuration / 60); // Convert seconds to minutes
+          setStretchDurationInput(settings.stretchDuration / 60); // Convert seconds to minutes
+        } catch (error) {
+          console.error("Failed to load settings in component:", error);
+        }
+      }
+    };
+    loadCurrentSettings();
+  }, []);
+
+  const handleSave = async () => {
+    const newWorkDuration = workDurationInput * 60; // Convert minutes to seconds
+    const newStretchDuration = stretchDurationInput * 60; // Convert minutes to seconds
+
+    if (newWorkDuration <= 0 || newStretchDuration <= 0) {
+      return;
+    }
+
+    const settingsToSave = {
+      workDuration: newWorkDuration,
+      stretchDuration: newStretchDuration,
+    };
+
+    if (isElectron()) {
+      try {
+        const success = await saveElectronSettings(settingsToSave);
+        if (success) {
+          setWorkDuration(newWorkDuration / 60);
+          setStretchDuration(newStretchDuration / 60);
+        }
+      } catch (error) {
+        console.error("Error saving settings:", error);
+      }
+    }
+  };
+
   const handleWorkDurationChange = (value: number[]) => {
-    setWorkDuration(value[0]);
+    setWorkDurationInput(value[0]);
   };
 
   const handleStretchDurationChange = (value: number[]) => {
-    setStretchDuration(value[0]);
+    setStretchDurationInput(value[0]);
   };
 
   return (
@@ -32,7 +77,7 @@ const TimerSettings: React.FC = () => {
         <div className="space-y-4">
           <div className="flex justify-between">
             <Label htmlFor="work-duration" className="text-sm font-medium">
-              Work Duration: {workDuration} minutes
+              Work Duration: {workDurationInput} minutes
             </Label>
           </div>
           <Slider
@@ -40,7 +85,7 @@ const TimerSettings: React.FC = () => {
             min={1}
             max={120}
             step={5}
-            defaultValue={[workDuration]}
+            defaultValue={[workDurationInput]}
             onValueChange={handleWorkDurationChange}
             disabled={isRunning}
             className="[&_[role=slider]]:bg-stretch-primary"
@@ -54,7 +99,7 @@ const TimerSettings: React.FC = () => {
         <div className="space-y-4">
           <div className="flex justify-between">
             <Label htmlFor="stretch-duration" className="text-sm font-medium">
-              Stretching Duration: {stretchDuration} minutes
+              Stretching Duration: {stretchDurationInput} minutes
             </Label>
           </div>
           <Slider
@@ -62,7 +107,7 @@ const TimerSettings: React.FC = () => {
             min={1}
             max={15}
             step={1}
-            defaultValue={[stretchDuration]}
+            defaultValue={[stretchDurationInput]}
             onValueChange={handleStretchDurationChange}
             disabled={isRunning}
             className="[&_[role=slider]]:bg-stretch-success"
@@ -72,6 +117,9 @@ const TimerSettings: React.FC = () => {
             <span>15 min</span>
           </div>
         </div>
+        <button onClick={handleSave} className="w-full primary-button mt-4">
+          Save Settings
+        </button>
       </CardContent>
     </Card>
   );

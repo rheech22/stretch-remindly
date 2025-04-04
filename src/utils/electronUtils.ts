@@ -1,47 +1,86 @@
-// Check if running in Electron
-export const isElectron = (): boolean => {
-  return window && "electron" in window;
+import { Settings } from "@/types/electron"; // Import Settings type
+
+export const isElectron = (): boolean => !!window.electron;
+
+// Get settings from the main process
+export const getElectronSettings = async (): Promise<Settings> => {
+  if (!isElectron()) {
+    // Provide default settings if not in Electron environment
+    console.warn("Not running in Electron, returning default settings.");
+    return {
+      workDuration: 25 * 60,
+      stretchDuration: 5 * 60,
+      startMinimized: false,
+      runAtStartup: false,
+    };
+  }
+  try {
+    const settings = await window.electron.getSettings();
+    console.log("Settings loaded from main:", settings);
+    return settings;
+  } catch (error) {
+    console.error("Failed to get settings from main:", error);
+    // Return default settings on error
+    return {
+      workDuration: 25 * 60,
+      stretchDuration: 5 * 60,
+      startMinimized: false,
+      runAtStartup: false,
+    };
+  }
 };
 
-// Get settings from Electron store
-export const getElectronSettings = async () => {
-  if (!isElectron()) return null;
-  return await window.electron.getSettings();
+// Save settings to the main process
+export const saveElectronSettings = async (settings: Partial<Settings>): Promise<boolean> => {
+  if (!isElectron()) {
+    console.warn("Not running in Electron, cannot save settings.");
+    return false;
+  }
+  try {
+    const success = await window.electron.saveSettings(settings);
+    console.log("Settings save attempt result:", success);
+    return success;
+  } catch (error) {
+    console.error("Failed to save settings to main:", error);
+    return false;
+  }
 };
 
-// Save settings to Electron store
-export const saveElectronSettings = async (settings: {
-  workDuration?: number;
-  stretchDuration?: number;
-  startMinimized?: boolean;
-  runAtStartup?: boolean;
-}) => {
-  if (!isElectron()) return false;
-  return await window.electron.saveSettings(settings);
-};
-
-// Show native notification via main process
-export const showNativeNotification = (title: string, body: string) => {
+export const showNativeNotification = (
+  title: string,
+  body: string,
+) => {
   if (!isElectron()) return;
-  window.electron.showNotification({ title, body });
+  // Ensure options object is passed correctly
+  window.electron.showNotification({ title, body }); 
 };
 
-// Ask the main process to show the main window
 export const showMainWindow = () => {
   if (!isElectron()) return;
   window.electron.showWindow();
 };
 
-// Register event listeners for timer controls from system tray
+// Type definition for the callback function
+type TimerCallback = () => void;
+
+// Type definition for the unsubscribe function returned by registerTimerListeners
+type UnsubscribeFunction = () => void;
+
+// Register listeners for timer events from main process
 export const registerTimerListeners = (
-  startCallback: () => void,
-  pauseCallback: () => void,
-) => {
-  if (!isElectron())
-    return { unsubscribeStart: () => {}, unsubscribePause: () => {} };
+  onStart: TimerCallback,
+  onPause: TimerCallback,
+): UnsubscribeFunction => {
+  if (!isElectron()) {
+    return () => {}; // Return a no-op function if not in Electron
+  }
 
-  const unsubscribeStart = window.electron.onStartTimer(startCallback);
-  const unsubscribePause = window.electron.onPauseTimer(pauseCallback);
+  const unsubscribeStart = window.electron.onStartTimer(onStart);
+  const unsubscribePause = window.electron.onPauseTimer(onPause);
 
-  return { unsubscribeStart, unsubscribePause };
+  // Return a function that unsubscribes both listeners
+  return () => {
+    unsubscribeStart();
+    unsubscribePause();
+  };
 };
