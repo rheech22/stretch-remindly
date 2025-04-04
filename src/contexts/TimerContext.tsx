@@ -6,6 +6,7 @@ import {
   saveElectronSettings,
   showNativeNotification,
   registerTimerListeners,
+  showMainWindow,
 } from "@/utils/electronUtils";
 
 type TimerContextType = {
@@ -126,12 +127,13 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
           duration: 10000,
         });
 
-        // Show native notification if in Electron
+        // Show native notification and bring window to front if in Electron
         if (isElectron()) {
           showNativeNotification(
             "Time to stretch!",
             "Your work session is complete. Let's do some stretching!",
           );
+          showMainWindow();
         }
 
         setIsStretching(true);
@@ -151,6 +153,8 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
             "Stretching complete!",
             "Great job! Your work timer is restarting.",
           );
+          // Optionally, show window when stretching is complete too, if desired
+          // showMainWindow(); 
         }
 
         setIsStretching(false);

@@ -20,10 +20,16 @@ export const saveElectronSettings = async (settings: {
   return await window.electron.saveSettings(settings);
 };
 
-// Show native notification
-export const showNativeNotification = async (title: string, body: string) => {
-  if (!isElectron()) return false;
-  return await window.electron.showNotification({ title, body });
+// Show native notification via main process
+export const showNativeNotification = (title: string, body: string) => {
+  if (!isElectron()) return;
+  window.electron.showNotification({ title, body });
+};
+
+// Ask the main process to show the main window
+export const showMainWindow = () => {
+  if (!isElectron()) return;
+  window.electron.showWindow();
 };
 
 // Register event listeners for timer controls from system tray

@@ -14,7 +14,8 @@ export interface ElectronAPI {
   showNotification: (options: {
     title: string;
     body: string;
-  }) => Promise<boolean>;
+  }) => void;
+  showWindow: () => void;
   onStartTimer: (callback: () => void) => () => void;
   onPauseTimer: (callback: () => void) => () => void;
 }

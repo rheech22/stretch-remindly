@@ -83,7 +83,16 @@ const createTray = (): void => {
     {
       label: "Open Stretch Remindly",
       click: () => {
-        mainWindow?.show();
+        if (BrowserWindow.getAllWindows().length === 0) {
+          createWindow();
+        } else {
+          // Show the window if it's hidden or minimized
+          if (mainWindow && (!mainWindow.isVisible() || mainWindow.isMinimized())) {
+            mainWindow.restore(); // Restore if minimized
+            mainWindow.show(); // Show if hidden
+            mainWindow.focus(); // Bring to front
+          }
+        }
       },
     },
     {
@@ -119,12 +128,39 @@ app.on("window-all-closed", () => {
   }
 });
 
-ipcMain.on("show-notification", (_event, title: string, body: string) => {
+ipcMain.on("show-notification", (_event, { title, body }: { title: string, body: string }) => {
+  log.info(`[IPC] Received show-notification: ${title} - ${body}`);
   if (Notification.isSupported()) {
     const notification = new Notification({ title, body });
     notification.show();
+    log.info(`[Notification] Showing notification: ${title}`);
+
+    // Also bring the window to front if needed
+    if (mainWindow && (!mainWindow.isVisible() || mainWindow.isMinimized())) {
+      log.info('[Window] Restoring/Showing window on notification.');
+      mainWindow.restore();
+      mainWindow.show();
+      mainWindow.focus();
+    } else if (mainWindow && !mainWindow.isFocused()) {
+      log.info('[Window] Focusing window on notification.');
+      mainWindow.focus(); // Bring to front even if visible but not focused
+    }
   } else {
-    log.info("[Notification] Notifications not supported on this system.");
+    log.warn("[Notification] Notifications not supported on this system.");
+  }
+});
+
+// Handle request to show the main window
+ipcMain.on("show-window", () => {
+  log.info('[IPC] Received show-window');
+  if (mainWindow) {
+    if (!mainWindow.isVisible() || mainWindow.isMinimized()) {
+       log.info('[Window] Restoring/Showing window.');
+      mainWindow.restore();
+      mainWindow.show();
+    }
+    log.info('[Window] Focusing window.');
+    mainWindow.focus(); // Ensure it gets focus
   }
 });
 
