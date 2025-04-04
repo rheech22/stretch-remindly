@@ -4,13 +4,8 @@ import { Button } from "./ui/button";
 import { Play, Pause, RefreshCw } from "lucide-react";
 
 const TimerControls: React.FC = () => {
-  const { 
-    isRunning, 
-    isStretching, 
-    startTimer, 
-    pauseTimer, 
-    resetTimer
-  } = useTimer();
+  const { isRunning, isStretching, startTimer, pauseTimer, resetTimer } =
+    useTimer();
 
   return (
     <div className="flex flex-col items-center space-y-6 no-drag">
@@ -21,14 +16,12 @@ const TimerControls: React.FC = () => {
           onClick={isRunning ? pauseTimer : startTimer}
           className={`
             w-16 h-16 rounded-full 
-            ${isRunning 
-              ? "bg-transparent hover:bg-destructive/10" 
-              : "bg-transparent hover:bg-primary/10"
+            ${
+              isRunning
+                ? "bg-transparent hover:bg-destructive/10"
+                : "bg-transparent hover:bg-primary/10"
             }
-            ${isRunning 
-              ? "text-destructive" 
-              : "text-primary"
-            }
+            ${isRunning ? "text-destructive" : "text-primary"}
             font-bold
             border-2 ${isRunning ? "border-destructive" : "border-primary"}
             shadow-md
@@ -65,18 +58,22 @@ const TimerControls: React.FC = () => {
       </div>
 
       {/* Status text with cyberpunk styling */}
-      <div className="text-center font-mono text-sm tracking-wider uppercase">
-        <span className={`
+      <div className="text-center text-sm tracking-wider uppercase">
+        <span
+          className={`
           px-3 py-1 rounded 
-          ${isRunning 
-            ? "bg-primary/20 text-primary animate-pulse" 
-            : "bg-muted/30 text-muted-foreground"
+          ${
+            isRunning
+              ? "bg-primary/20 text-primary animate-pulse"
+              : "bg-muted/30 text-muted-foreground"
           }
-        `}>
-          {isRunning 
-            ? (isStretching ? "STRETCH IN PROGRESS" : "WORK IN PROGRESS") 
-            : "TIMER PAUSED"
-          }
+        `}
+        >
+          {isRunning
+            ? isStretching
+              ? "STRETCH IN PROGRESS"
+              : "WORK IN PROGRESS"
+            : "TIMER PAUSED"}
         </span>
       </div>
     </div>

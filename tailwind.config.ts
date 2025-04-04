@@ -20,45 +20,42 @@ export default {
     },
     extend: {
       colors: {
-        border: "#33ccff", // Neon accent color
-        input: "#1a1d23", // Dark bg, neon border
-        ring: "#66d9ef", // Neon focus ring (primary/secondary)
-        background: "#0a0a2a", // Deep dark blue/purple/black
-        foreground: "#ffffff", // Bright cyan/white/light grey
+        border: "hsl(var(--border))",
+        input: "hsl(var(--input))",
+        ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))", // CSS 변수 참조
+        foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#ff69b4", // Neon Pink/Magenta
-          foreground: "#ffffff", // Light color
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
-          DEFAULT: "#03a9f4", // Electric Blue/Cyan
-          foreground: "#ffffff", // Light color
+          DEFAULT: "hsl(var(--secondary))", // CSS 변수 참조
+          foreground: "hsl(var(--secondary-foreground))",
         },
         destructive: {
-          DEFAULT: "#f97316", // Keep standard red for errors
-          foreground: "#ffffff",
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
         },
         muted: {
-          DEFAULT: "#2f343a", // Darker, less saturated shade
-          foreground: "#ffffff", // Muted light color
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
         },
         accent: {
-          DEFAULT: "#8f0a1a", // Vivid Purple/Green
-          foreground: "#ffffff", // Light color
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
-          DEFAULT: "#1a1d23", // Dark background
-          foreground: "#ffffff", // Bright foreground
+          DEFAULT: "hsl(var(--popover))",
+          foreground: "hsl(var(--popover-foreground))",
         },
         card: {
-          DEFAULT: "#14161a", // Slightly lighter dark shade, maybe with neon border
-          foreground: "#ffffff", // Bright foreground
+          DEFAULT: "hsl(var(--card))",
+          foreground: "hsl(var(--card-foreground))",
         },
-        // Custom cyberpunk specific colors if needed
-        "cyber-bg": "#0a0a2a", // Example dark blue
-        "cyber-glow": "#00f0ff", // Example cyan glow
       },
       borderRadius: {
-        lg: "var(--radius)", // Keep or adjust for sharper edges
+        lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
@@ -78,11 +75,17 @@ export default {
         // Pulse glow animation for neon effects
         "pulse-glow": {
           "0%, 100%": { opacity: "1", boxShadow: "0 0 5px #ff69b4" },
-          "50%": { opacity: "0.7", boxShadow: "0 0 20px #ff69b4, 0 0 30px #ff69b4" },
+          "50%": {
+            opacity: "0.7",
+            boxShadow: "0 0 20px #ff69b4, 0 0 30px #ff69b4",
+          },
         },
         "pulse-glow-secondary": {
           "0%, 100%": { opacity: "1", boxShadow: "0 0 5px #03a9f4" },
-          "50%": { opacity: "0.7", boxShadow: "0 0 20px #03a9f4, 0 0 30px #03a9f4" },
+          "50%": {
+            opacity: "0.7",
+            boxShadow: "0 0 20px #03a9f4, 0 0 30px #03a9f4",
+          },
         },
         "border-beam": {
           "100%": { "offset-distance": "100%" },
@@ -92,11 +95,12 @@ export default {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-glow": "pulse-glow 10s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "pulse-glow-secondary": "pulse-glow-secondary 10s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "pulse-glow-secondary":
+          "pulse-glow-secondary 10s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         "slow-spin": "slow-spin 6s linear infinite",
       },
     },
   },
-  plugins: [tailwindAnimations, require("@tailwindcss/typography")], // Ensure typography plugin is present
+  plugins: [tailwindAnimations], // Ensure typography plugin is present
 } satisfies Config;

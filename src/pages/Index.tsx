@@ -1,10 +1,9 @@
-import { useTimer } from "@/contexts/TimerContext"; 
+import { useTimer } from "@/contexts/TimerContext";
 import TimerDisplay from "@/components/TimerDisplay";
-import StretchNotification from "@/components/StretchNotification";
 import TimerControls from "../components/TimerControls";
 import { TimerProvider } from "@/contexts/TimerContext";
-import { useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -14,7 +13,7 @@ const Index = () => {
 
   useEffect(() => {
     if (isStretching) {
-      navigate('/stretching');
+      navigate("/stretching");
     }
   }, [isStretching, navigate]);
 
@@ -28,13 +27,13 @@ const Index = () => {
         <div className="flex flex-col items-center justify-center w-full max-w-xs mx-auto">
           <TimerControls />
         </div>
-        
+
         {/* Settings Button - only show when timer is not running */}
         {!isRunning && (
           <div className="absolute bottom-4 right-4 no-drag">
-            <Button 
-              onClick={() => navigate('/settings')} 
-              variant="ghost" 
+            <Button
+              onClick={() => navigate("/settings")}
+              variant="ghost"
               size="icon"
               className="rounded-full w-12 h-12 border border-primary/30 hover:border-primary/60 transition-all duration-300 bg-transparent"
             >
@@ -48,3 +47,4 @@ const Index = () => {
 };
 
 export default Index;
+

@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,41 +10,41 @@
 
 @layer base {
   :root {
-    /* Cyberpunk HSL Variables */
-    --background: 240 50% 8%; /* Dark Blue */
-    --foreground: 210 40% 98%; /* Almost White */
+    /* Cyberpunk Dark Theme */
+    --background: 270 30% 15%; /* Dark deep purple */
+    --foreground: 210 40% 95%; /* Light grayish blue */
 
-    --card: 240 40% 12%; /* Darker Card */
-    --card-foreground: 210 40% 98%;
+    --card: 270 25% 10%; /* Slightly lighter purple */
+    --card-foreground: var(--foreground);
 
-    --popover: 240 50% 8%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 270 25% 8%; /* Darker popover */
+    --popover-foreground: var(--foreground);
 
     --primary: 330 100% 70%; /* Neon Pink */
-    --primary-foreground: 330 100% 98%; /* Lighter Pink/White */
+    --primary-foreground: 330 100% 10%; /* Dark pink for contrast */
 
-    --secondary: 195 100% 50%; /* Electric Blue/Cyan */
-    --secondary-foreground: 195 100% 98%; /* Lighter Blue/White */
+    --secondary: 180 90% 60%; /* Bright Cyan */
+    --secondary-foreground: 180 90% 5%; /* Dark cyan for contrast */
 
-    --muted: 240 20% 30%; /* Muted Dark Grey/Blue */
-    --muted-foreground: 210 20% 75%; /* Muted Light Grey */
+    --muted: 270 15% 30%; /* Muted purple/gray */
+    --muted-foreground: 210 20% 70%; /* Lighter muted gray */
 
-    --accent: 270 100% 70%; /* Vivid Purple */
-    --accent-foreground: 270 100% 98%; /* Lighter Purple/White */
+    --accent: var(--secondary); /* Use cyan as accent */
+    --accent-foreground: var(--secondary-foreground);
 
-    --destructive: 0 84% 60%; /* Standard Red */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 84% 60%; /* Bright Red */
+    --destructive-foreground: var(--foreground);
 
-    --border: 195 100% 50%; /* Use Secondary/Cyan for borders */
-    --input: 240 30% 20%; /* Slightly lighter dark for input background */
-    --ring: 330 100% 70%; /* Use Primary/Pink for focus rings */
+    --border: 330 100% 70% / 0.2; /* Neon pink border with alpha */
+    --input: 270 20% 15%; /* Dark input background */
+    --ring: 330 100% 70%; /* Neon pink ring */
 
-    --radius: 0.5rem; /* Keep or make sharper (e.g., 0.3rem) */
+    --radius: 0.5rem;
   }
 
   .dark {
     /* Same variables for dark mode in this cyberpunk theme */
-    --background: 240 50% 8%;
+    --background: 240 50% 12%;
     --foreground: 210 40% 98%;
     --card: 240 40% 12%;
     --card-foreground: 210 40% 98%;
@@ -77,9 +79,6 @@
     /* font-family: ui-sans-serif, system-ui, sans-serif; */
   }
 }
-
-/* Import Orbitron font (example using Google Fonts) */
-@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
 
 @layer components {
   .timer-button {

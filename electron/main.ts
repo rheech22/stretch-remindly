@@ -54,8 +54,6 @@ const createWindow = (): void => {
     },
     // Modern window styling
     titleBarStyle: "hidden",
-    //vibrancy: "under-window",
-    visualEffectState: "active",
     roundedCorners: true,
     hasShadow: true,
     resizable: false, // Disable resizing
