@@ -1,35 +1,50 @@
-import { TimerProvider } from "@/contexts/TimerContext";
+import { useTimer } from "@/contexts/TimerContext"; // Removed TimerProvider, only useTimer remains
 import TimerDisplay from "@/components/TimerDisplay";
-import TimerSettings from "@/components/TimerSettings";
-import StretchingGuide from "@/components/StretchingGuide";
 import StretchNotification from "@/components/StretchNotification";
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
+// Merged IndexContent into Index component
 const Index = () => {
+  const { isStretching } = useTimer();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isStretching) {
+      navigate('/stretching');
+    }
+  }, [isStretching, navigate]);
+
   return (
-    <TimerProvider>
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-stretch-light p-4">
-        <div className="w-full max-w-md">
-          <header className="mb-8 text-center">
-            <h1 className="text-3xl font-bold text-stretch-primary mb-2">
-              스트레치 리마인더
-            </h1>
-            <p className="text-stretch-neutral">
-              정기적인 스트레칭으로 건강한 작업 루틴을 만드세요
-            </p>
-          </header>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-stretch-light p-4">
+      <div className="w-full max-w-md">
+        <header className="mb-8 text-center">
+          <h1 className="text-3xl font-bold text-stretch-primary mb-2">
+            Stretch Remindly
+          </h1>
+          <p className="text-stretch-neutral">
+            Create a healthy work routine with regular stretching
+          </p>
+        </header>
 
-          <StretchingGuide />
-          <StretchNotification />
-          <TimerDisplay />
-          <TimerSettings />
-
-          <footer className="mt-8 text-center text-sm text-stretch-neutral">
-            <p>© 2023 스트레치 리마인더 - 당신의 건강을 생각합니다</p>
-          </footer>
+        <StretchNotification />
+        <TimerDisplay />
+        
+        {/* Added link to settings page */}
+        <div className="mt-4 text-center">
+          <Link to="/settings" className="text-stretch-primary hover:underline">
+            Settings
+          </Link>
         </div>
+
+        <footer className="mt-8 text-center text-sm text-stretch-neutral">
+          <p> 2023 Stretch Remindly - We care about your health</p>
+        </footer>
       </div>
-    </TimerProvider>
+    </div>
   );
 };
+
+// Removed the TimerProvider wrapping part
 
 export default Index;
