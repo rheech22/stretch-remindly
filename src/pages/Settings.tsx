@@ -20,7 +20,7 @@ const SettingsPage = () => {
         </div>
 
         <footer className="mt-8 text-center text-sm text-stretch-neutral">
-          <p> 2023 Stretch Reminder - We care about your health</p>
+          <p> 2025 Stretch Remindly - We care about your health</p>
         </footer>
       </div>
     </div>
