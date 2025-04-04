@@ -7,6 +7,7 @@ import Index from "./pages/Index";
 import Settings from "./pages/Settings";
 import Stretching from "./pages/Stretching";
 import NotFound from "./pages/NotFound";
+import TitleBar from "./components/TitleBar";
 import React from "react";
 
 const queryClient = new QueryClient();
@@ -17,12 +18,12 @@ const App = () => (
       {/* Toast notifications */}
       <Toaster />
       <Sonner />
-      <div className="flex flex-col h-screen bg-background text-foreground font-sans antialiased overflow-hidden">
-        {/* Optional: Custom Title Bar for frameless window */}
-        {/* <TitleBar /> */}
+      <div className="flex flex-col h-screen bg-background text-foreground font-sans antialiased overflow-hidden app-drag-region">
+        {/* Custom Title Bar for frameless window */}
+        <TitleBar />
 
         {/* Main content area - with cyberpunk styling */}
-        <main className="flex-grow flex flex-col items-center justify-center p-8 space-y-8 bg-gradient-to-b from-background via-background/95 to-background/90">
+        <main className="flex-grow flex flex-col items-center justify-center p-8 space-y-8 bg-gradient-to-b from-background via-background/95 to-background/90 no-drag">
           <HashRouter>
             <Routes>
               <Route path="/" element={<Index />} />

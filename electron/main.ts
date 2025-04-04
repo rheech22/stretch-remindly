@@ -45,7 +45,7 @@ const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
-    width: 900,
+    width: 500,
     height: 700,
     webPreferences: {
       preload: path.join(currentDir, "preload.js"), // Use currentDir
@@ -61,8 +61,7 @@ const createWindow = (): void => {
     visualEffectState: 'active',
     roundedCorners: true,
     hasShadow: true,
-    minWidth: 700,
-    minHeight: 600,
+    resizable: false, // Disable resizing
     // show: false
   });
 
@@ -163,44 +162,51 @@ app.on("window-all-closed", () => {
   }
 });
 
-// Handle get-settings event from renderer process
-ipcMain.handle("get-settings", async (): Promise<Partial<Settings>> => {
-  try {
-    // Retrieve all settings and log them immediately
-    const workDuration = store.get("workDuration");
-    const stretchDuration = store.get("stretchDuration");
-    const startMinimized = store.get("startMinimized");
-    const runAtStartup = store.get("runAtStartup");
-
-    log.info(`[IPC] Retrieved from store - workDuration: ${workDuration} (type: ${typeof workDuration})`);
-    log.info(`[IPC] Retrieved from store - stretchDuration: ${stretchDuration} (type: ${typeof stretchDuration})`);
-    log.info(`[IPC] Retrieved from store - startMinimized: ${startMinimized}`);
-    log.info(`[IPC] Retrieved from store - runAtStartup: ${runAtStartup}`);
-
-    const settings: Partial<Settings> = {
-      workDuration: workDuration,
-      stretchDuration: stretchDuration,
-      startMinimized: startMinimized,
-      runAtStartup: runAtStartup,
-    };
-    // log.info("[IPC] Returning settings:", settings); // Keep this log if needed
-    return settings;
-  } catch (error) {
-    log.error("[IPC] Error getting settings:", error);
-    return {};
-  }
+// IPC handlers
+ipcMain.handle('get-settings', () => {
+  return {
+    workDuration: store.get('workDuration'),
+    stretchDuration: store.get('stretchDuration'),
+    startMinimized: store.get('startMinimized'),
+    runAtStartup: store.get('runAtStartup'),
+  };
 });
 
-// Handle save-settings event from renderer process
-ipcMain.handle("save-settings", async (event, settings: Partial<Settings>) => {
+ipcMain.handle('save-settings', (_, settings: Partial<Settings>) => {
   try {
-    // Use store.set() to save partial settings (it handles merging)
-    store.set(settings);
-    // console.log('Settings saved via store.set()', store.get()); // Optional: Log all saved settings
-    return true; // Indicate success
+    if (settings.workDuration !== undefined) {
+      store.set('workDuration', settings.workDuration);
+    }
+    if (settings.stretchDuration !== undefined) {
+      store.set('stretchDuration', settings.stretchDuration);
+    }
+    if (settings.startMinimized !== undefined) {
+      store.set('startMinimized', settings.startMinimized);
+    }
+    if (settings.runAtStartup !== undefined) {
+      store.set('runAtStartup', settings.runAtStartup);
+      app.setLoginItemSettings({
+        openAtLogin: settings.runAtStartup,
+        openAsHidden: store.get('startMinimized'),
+      });
+    }
+    return true;
   } catch (error) {
     console.error("Failed to save settings:", error);
     return false; // Indicate failure
+  }
+});
+
+// Window control handlers
+ipcMain.on('minimize-window', () => {
+  if (mainWindow) {
+    mainWindow.minimize();
+  }
+});
+
+ipcMain.on('close-window', () => {
+  if (mainWindow) {
+    mainWindow.close();
   }
 });
 

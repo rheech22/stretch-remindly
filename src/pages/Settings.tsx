@@ -11,12 +11,12 @@ const SettingsPage = () => {
     <TimerProvider>
       <div className="min-h-screen flex flex-col items-center justify-start p-8 bg-gradient-to-b from-background via-background/95 to-background/90">
         {/* Back button */}
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-12 left-4">
           <Button 
             onClick={() => navigate('/')} 
             variant="ghost" 
             size="icon"
-            className="rounded-full w-12 h-12 bg-card/30 border border-primary/20 hover:bg-card/50 hover:border-primary/40 transition-all duration-300"
+            className="rounded-full w-12 h-12 bg-transparent border border-primary/30 hover:border-primary/60 transition-all duration-300"
           >
             <ArrowLeft className="h-6 w-6 text-primary" />
           </Button>

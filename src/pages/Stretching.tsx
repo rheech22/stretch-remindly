@@ -28,12 +28,12 @@ const StretchingPage = () => {
     <TimerProvider>
       <div className="min-h-screen flex flex-col items-center justify-center p-8 bg-gradient-to-b from-background via-background/95 to-background/90 overflow-hidden">
         {/* Back button */}
-        <div className="absolute top-4 left-4">
+        <div className="absolute top-12 left-4">
           <Button 
             onClick={handleFinishStretching} 
             variant="ghost" 
             size="icon"
-            className="rounded-full w-12 h-12 bg-card/30 border border-accent/20 hover:bg-card/50 hover:border-accent/40 transition-all duration-300"
+            className="rounded-full w-12 h-12 bg-transparent border border-accent/30 hover:border-accent/60 transition-all duration-300"
           >
             <ArrowLeft className="h-6 w-6 text-accent" />
           </Button>

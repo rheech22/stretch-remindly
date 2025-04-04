@@ -13,7 +13,7 @@ const TimerControls: React.FC = () => {
   } = useTimer();
 
   return (
-    <div className="flex flex-col items-center space-y-6">
+    <div className="flex flex-col items-center space-y-6 no-drag">
       {/* Main controls with neon glow effects */}
       <div className="flex justify-center space-x-4">
         {/* Start/Pause Button */}

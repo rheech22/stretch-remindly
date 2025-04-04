@@ -6,6 +6,12 @@ export interface Settings {
   runAtStartup: boolean;
 }
 
+declare global {
+  interface Window {
+    electron: ElectronAPI;
+  }
+}
+
 export interface ElectronAPI {
   // Return the full Settings object
   getSettings: () => Promise<Settings>; 
@@ -16,6 +22,9 @@ export interface ElectronAPI {
     body: string;
   }) => void; 
   showWindow: () => void;
+  // Window control methods
+  minimize: () => void;
+  close: () => void;
   onStartTimer: (callback: () => void) => () => void;
   onPauseTimer: (callback: () => void) => () => void;
 }

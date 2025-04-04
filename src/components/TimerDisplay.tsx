@@ -24,7 +24,7 @@ const TimerDisplay: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center no-drag">
       {/* Cyberpunk title with glowing effect */}
       <h1 className="text-3xl font-bold mb-2 text-center font-['Orbitron'] tracking-wider">
         <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-white to-secondary">

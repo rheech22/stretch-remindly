@@ -6,6 +6,8 @@ interface ElectronAPI {
   saveSettings: (settings: any) => Promise<boolean>; // Will be refined in electron.d.ts
   showNotification: (options: { title: string; body: string }) => void;
   showWindow: () => void;
+  minimize: () => void;
+  close: () => void;
   onStartTimer: (callback: () => void) => () => void;
   onPauseTimer: (callback: () => void) => () => void;
 }
@@ -20,6 +22,14 @@ contextBridge.exposeInMainWorld('electron', {
   showWindow: () => {
     console.log('preload: Sending show-window');
     ipcRenderer.send('show-window');
+  },
+  minimize: () => {
+    console.log('preload: Sending minimize-window');
+    ipcRenderer.send('minimize-window');
+  },
+  close: () => {
+    console.log('preload: Sending close-window');
+    ipcRenderer.send('close-window');
   },
   // Example listeners (if needed, ensure they are correctly set up in main.ts)
   onStartTimer: (callback: () => void) => {

@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Electron window drag region */
+.app-drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
 @layer base {
   :root {
     /* Cyberpunk HSL Variables */
