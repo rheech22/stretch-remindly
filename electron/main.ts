@@ -111,24 +111,30 @@ const createTray = (): void => {
     {
       label: "Open Stretch Remindly",
       click: () => {
-        if (BrowserWindow.getAllWindows().length === 0) {
+        if (mainWindow === null) {
+          // More robust check if window doesn't exist
+          log.info("[Tray Click] No window found, creating one.");
           createWindow();
         } else {
-          // Show the window if it's hidden or minimized
-          if (
-            mainWindow &&
-            (!mainWindow.isVisible() || mainWindow.isMinimized())
-          ) {
-            mainWindow.restore(); // Restore if minimized
-            mainWindow.show(); // Show if hidden
-            mainWindow.focus(); // Bring to front
+          log.info(
+            "[Tray Click] Window exists, ensuring it's visible and focused.",
+          );
+          // Restore the window only if it's minimized
+          if (mainWindow.isMinimized()) {
+            log.info("[Tray Click] Window is minimized, restoring.");
+            mainWindow.restore();
           }
+          // Always show and focus the window when the menu item is clicked
+          log.info("[Tray Click] Showing and focusing window.");
+          mainWindow.show(); // Ensures the window is visible (if hidden)
+          mainWindow.focus(); // Brings the window to the front
         }
       },
     },
     {
       label: "Quit",
       click: () => {
+        log.info("[Tray Click] Quit requested.");
         isQuitting = true;
         app.quit();
       },
