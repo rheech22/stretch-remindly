@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", // Electron이 지원하는 Node.js 버전에 맞춰 조정 가능
+    "lib": ["ES2023"],
+    "module": "CommonJS", // Electron main process는 CommonJS 사용
+    "skipLibCheck": true,
+
+    /* Bundler mode -> Node mode */
+    "moduleResolution": "Node", // CommonJS 모듈 해석 방식
+    "moduleDetection": "force",
+    "outDir": "./dist-electron", // 컴파일 결과 출력 디렉토리
+    "esModuleInterop": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["electron/**/*"], // Electron 메인 프로세스 관련 파일만 포함
+  "exclude": ["node_modules"] // node_modules 제외
+}
