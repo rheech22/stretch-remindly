@@ -29,8 +29,8 @@
     --muted: 270 15% 30%; /* Muted purple/gray */
     --muted-foreground: 210 20% 70%; /* Lighter muted gray */
 
-    --accent: var(--secondary); /* Use cyan as accent */
-    --accent-foreground: var(--secondary-foreground);
+    --accent: 100 100% 55%; /* Electric Lime Green */
+    --accent-foreground: 100 100% 10%; /* Dark green for contrast */
 
     --destructive: 0 84% 60%; /* Bright Red */
     --destructive-foreground: var(--foreground);

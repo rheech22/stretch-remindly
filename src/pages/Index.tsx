@@ -35,7 +35,7 @@ const Index = () => {
               onClick={() => navigate("/settings")}
               variant="ghost"
               size="icon"
-              className="rounded-full w-12 h-12 border border-primary/30 hover:border-primary/60 transition-all duration-300 bg-transparent"
+              className="rounded-full w-12 h-12 border border-primary/30 hover:border-primary/60 transition-all duration-300 bg-transparent hover:bg-primary/10"
             >
               <Settings className="h-6 w-6 text-primary" />
             </Button>
