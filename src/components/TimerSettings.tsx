@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
@@ -11,7 +10,7 @@ const TimerSettings: React.FC = () => {
     setWorkDuration,
     stretchDuration,
     setStretchDuration,
-    isRunning
+    isRunning,
   } = useTimer();
 
   const handleWorkDurationChange = (value: number[]) => {
@@ -25,7 +24,9 @@ const TimerSettings: React.FC = () => {
   return (
     <Card className="w-full max-w-md bg-white shadow-lg rounded-xl overflow-hidden transition-all hover:shadow-xl mt-4">
       <CardHeader className="pb-2">
-        <CardTitle className="text-xl text-stretch-dark">Timer Settings</CardTitle>
+        <CardTitle className="text-xl text-stretch-dark">
+          Timer Settings
+        </CardTitle>
       </CardHeader>
       <CardContent className="space-y-6 p-6">
         <div className="space-y-4">
@@ -36,7 +37,7 @@ const TimerSettings: React.FC = () => {
           </div>
           <Slider
             id="work-duration"
-            min={15}
+            min={1}
             max={120}
             step={5}
             defaultValue={[workDuration]}
@@ -58,7 +59,7 @@ const TimerSettings: React.FC = () => {
           </div>
           <Slider
             id="stretch-duration"
-            min={3}
+            min={1}
             max={15}
             step={1}
             defaultValue={[stretchDuration]}

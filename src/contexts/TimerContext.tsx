@@ -226,6 +226,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTimer = (): TimerContextType => {
   const context = useContext(TimerContext);
   if (context === undefined) {
