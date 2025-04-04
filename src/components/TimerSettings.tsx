@@ -135,7 +135,7 @@ const TimerSettings: React.FC = () => {
               disabled={isRunning}
               className="[&_[role=slider]]:bg-primary [&_[role=slider]]:border-2 [&_[role=slider]]:border-white/50 [&_[role=slider]]:shadow-glow [&_[role=slider]]:h-5 [&_[role=slider]]:w-5 [&_[role=slider]]:hover:bg-primary/80 [&_[role=slider]]:transition-all [&_[role=slider]]:duration-300"
             />
-            <div className="absolute -bottom-1 left-0 right-0 flex justify-between text-xs text-muted-foreground font-mono">
+            <div className="absolute -bottom-1 left-0 right-0 flex justify-between text-xs text-muted-foreground">
               <span>1</span>
               <span>15</span>
               <span>30</span>
@@ -172,9 +172,10 @@ const TimerSettings: React.FC = () => {
               value={[stretchDurationInput]}
               onValueChange={handleStretchDurationChange}
               disabled={isRunning}
-              className="[&_[role=slider]]:bg-accent [&_[role=slider]]:border-2 [&_[role=slider]]:border-white/50 [&_[role=slider]]:shadow-glow [&_[role=slider]]:h-5 [&_[role=slider]]:w-5 [&_[role=slider]]:hover:bg-accent/80 [&_[role=slider]]:transition-all [&_[role=slider]]:duration-300"
+              className="[&_[role=slider]]:bg-primary [&_[role=slider]]:border-2 [&_[role=slider]]:border-white/50 [&_[role=slider]]:shadow-glow [&_[role=slider]]:h-5 [&_[role=slider]]:w-5 [&_[role=slider]]:hover:bg-primary/80 [&_[role=slider]]:transition-all [&_[role=slider]]:duration-300"
+              trackClassName="bg-accent"
             />
-            <div className="absolute -bottom-1 left-0 right-0 flex justify-between text-xs text-muted-foreground font-mono">
+            <div className="absolute -bottom-1 left-0 right-0 flex justify-between text-xs text-muted-foreground ">
               <span>1</span>
               <span>5</span>
               <span>10</span>

@@ -1,17 +1,13 @@
 import { useTimer } from "@/contexts/TimerContext";
-import React from "react";
 import { Button } from "./ui/button";
 import { Play, Pause, RefreshCw } from "lucide-react";
 
 const TimerControls: React.FC = () => {
-  const { isRunning, isStretching, startTimer, pauseTimer, resetTimer } =
-    useTimer();
+  const { isRunning, startTimer, pauseTimer, resetTimer } = useTimer();
 
   return (
     <div className="flex flex-col items-center space-y-6 no-drag">
-      {/* Main controls with neon glow effects */}
       <div className="flex justify-center space-x-4">
-        {/* Start/Pause Button */}
         <Button
           onClick={isRunning ? pauseTimer : startTimer}
           className={`
@@ -37,7 +33,6 @@ const TimerControls: React.FC = () => {
           )}
         </Button>
 
-        {/* Reset Button - only show in work mode */}
         {isRunning && (
           <Button
             onClick={resetTimer}
@@ -57,7 +52,6 @@ const TimerControls: React.FC = () => {
         )}
       </div>
 
-      {/* Status text with cyberpunk styling */}
       <div className="text-center text-sm tracking-wider uppercase">
         <span
           className={`
@@ -69,11 +63,7 @@ const TimerControls: React.FC = () => {
           }
         `}
         >
-          {isRunning
-            ? isStretching
-              ? "STRETCH IN PROGRESS"
-              : "WORK IN PROGRESS"
-            : "TIMER PAUSED"}
+          {isRunning ? "WORK IN PROGRESS" : "TIMER PAUSED"}
         </span>
       </div>
     </div>

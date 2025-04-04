@@ -9,6 +9,7 @@ import Settings from "./pages/Settings";
 import Stretching from "./pages/Stretching";
 import NotFound from "./pages/NotFound";
 import TitleBar from "./components/TitleBar";
+import { TimerProvider } from "./contexts/TimerContext";
 
 const queryClient = new QueryClient();
 
@@ -16,32 +17,37 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       {/* ...Toaster components */}
-      <Toaster />
-      <Sonner />
-      <div className="flex flex-col h-screen bg-background text-foreground font-sans antialiased overflow-hidden app-drag-region">
-        {/* Custom Title Bar for frameless window */}
-        <TitleBar />
+      <TimerProvider>
+        <Toaster />
+        <Sonner />
+        <div className="flex flex-col h-screen bg-background text-foreground font-sans antialiased overflow-hidden app-drag-region">
+          {/* Custom Title Bar for frameless window */}
+          <TitleBar />
 
-        {/* Main content area - with cyberpunk styling */}
-        {/* Increased opacity for the via color in the gradient */}
-        <main className="flex-grow flex flex-col items-center justify-center p-8 space-y-8 bg-gradient-to-b from-background via-secondary to-background">
-          {" "}
-          {/* <-- Changed via-secondary/5 to via-secondary/20 */}
-          <HashRouter>
-            <Routes>
-              <Route path="/" element={<Index />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/stretching" element={<Stretching />} />
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </HashRouter>
-        </main>
+          {/* Main content area - with cyberpunk styling */}
+          {/* Increased opacity for the via color in the gradient */}
+          <main className="flex-grow flex flex-col items-center justify-center p-8 space-y-8 bg-gradient-to-b from-background via-secondary to-background">
+            {" "}
+            {/* <-- Changed via-secondary/5 to via-secondary/20 */}
+            <HashRouter>
+              <Routes>
+                <Route path="/" element={<Index />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/stretching" element={<Stretching />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </HashRouter>
+          </main>
 
-        {/* Settings Footer Area - enhanced cyberpunk styling */}
-        <footer className="p-4 border-t border-primary/30 bg-card/50 backdrop-blur-lg">
-          {/* Add settings component here if needed */}
-        </footer>
-      </div>
+          {/* Settings Footer Area - enhanced cyberpunk styling */}
+          <footer className="mt-12 text-center text-sm text-muted-foreground border-t border-primary/20 pt-4">
+            <p className="font-mono tracking-wide">
+              © 2025 <span className="text-primary">STRETCH_REMINDLY</span> //
+              HEALTH_OPTIMIZATION_SYSTEM
+            </p>
+          </footer>
+        </div>
+      </TimerProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );

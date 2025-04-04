@@ -1,10 +1,17 @@
-import React, { createContext, useState, useEffect, useContext, useRef, useCallback } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  useContext,
+  useRef,
+  useCallback,
+} from "react";
 import { toast } from "@/components/ui/use-toast";
-import { Settings } from "@/types/electron"; 
+import { Settings } from "@/types/electron";
 import {
   isElectron,
-  getElectronSettings, 
-  saveElectronSettings, 
+  getElectronSettings,
+  saveElectronSettings,
   showNativeNotification,
   registerTimerListeners,
   showMainWindow,
@@ -27,16 +34,20 @@ type TimerContextType = {
   progress: number;
 };
 
-const defaultWorkDuration = 45; // 45 minutes
-const defaultStretchDuration = 5; // 5 minutes
+const defaultWorkDuration = 1;
+const defaultStretchDuration = 1;
 
 const TimerContext = createContext<TimerContextType | undefined>(undefined);
 
 export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [workDuration, setWorkDurationState] = useState<number>(defaultWorkDuration * 60);
-  const [stretchDuration, setStretchDurationState] = useState<number>(defaultStretchDuration * 60);
+  const [workDuration, setWorkDurationState] = useState<number>(
+    defaultWorkDuration * 60,
+  );
+  const [stretchDuration, setStretchDurationState] = useState<number>(
+    defaultStretchDuration * 60,
+  );
   const [remainingTime, setRemainingTime] = useState<number>(workDuration);
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isStretching, setIsStretching] = useState<boolean>(false);
@@ -139,9 +150,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
           const newTime = prevTime - 1;
 
           // Calculate progress percentage
-          const totalDuration = isStretching
-            ? stretchDuration
-            : workDuration;
+          const totalDuration = isStretching ? stretchDuration : workDuration;
           const newProgress = ((totalDuration - newTime) / totalDuration) * 100;
           setProgress(newProgress);
 
@@ -185,7 +194,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
             "Great job! Your work timer is restarting.",
           );
           // Optionally, show window when stretching is complete too, if desired
-          // showMainWindow(); 
+          // showMainWindow();
         }
 
         setIsStretching(false);
