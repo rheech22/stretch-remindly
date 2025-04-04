@@ -20,107 +20,83 @@ export default {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "#33ccff", // Neon accent color
+        input: "#1a1d23", // Dark bg, neon border
+        ring: "#66d9ef", // Neon focus ring (primary/secondary)
+        background: "#0a0a2a", // Deep dark blue/purple/black
+        foreground: "#ffffff", // Bright cyan/white/light grey
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#ff69b4", // Neon Pink/Magenta
+          foreground: "#ffffff", // Light color
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
+          DEFAULT: "#03a9f4", // Electric Blue/Cyan
+          foreground: "#ffffff", // Light color
         },
         destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "#f97316", // Keep standard red for errors
+          foreground: "#ffffff",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "#2f343a", // Darker, less saturated shade
+          foreground: "#ffffff", // Muted light color
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#8f0a1a", // Vivid Purple/Green
+          foreground: "#ffffff", // Light color
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
+          DEFAULT: "#1a1d23", // Dark background
+          foreground: "#ffffff", // Bright foreground
         },
         card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "#14161a", // Slightly lighter dark shade, maybe with neon border
+          foreground: "#ffffff", // Bright foreground
         },
-        sidebar: {
-          DEFAULT: "hsl(var(--sidebar-background))",
-          foreground: "hsl(var(--sidebar-foreground))",
-          primary: "hsl(var(--sidebar-primary))",
-          "primary-foreground": "hsl(var(--sidebar-primary-foreground))",
-          accent: "hsl(var(--sidebar-accent))",
-          "accent-foreground": "hsl(var(--sidebar-accent-foreground))",
-          border: "hsl(var(--sidebar-border))",
-          ring: "hsl(var(--sidebar-ring))",
-        },
-        stretch: {
-          primary: "#6E59A5",
-          secondary: "#9b87f5",
-          light: "#E5DEFF",
-          dark: "#1A1F2C",
-          success: "#4CAF50",
-          danger: "#F97316",
-          neutral: "#8E9196",
-        },
+        // Custom cyberpunk specific colors if needed
+        "cyber-bg": "#0a0a2a", // Example dark blue
+        "cyber-glow": "#00f0ff", // Example cyan glow
       },
       borderRadius: {
-        lg: "var(--radius)",
+        lg: "var(--radius)", // Keep or adjust for sharper edges
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
       keyframes: {
         "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
         },
         "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
         },
-        "pulse-gentle": {
-          "0%, 100%": {
-            opacity: "1",
-          },
-          "50%": {
-            opacity: "0.7",
-          },
+        "slow-spin": {
+          from: { transform: "rotate(0deg)" },
+          to: { transform: "rotate(360deg)" },
         },
-        wave: {
-          "0%": { transform: "rotate(0deg)" },
-          "10%": { transform: "rotate(14deg)" },
-          "20%": { transform: "rotate(-8deg)" },
-          "30%": { transform: "rotate(14deg)" },
-          "40%": { transform: "rotate(-4deg)" },
-          "50%": { transform: "rotate(10deg)" },
-          "60%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(0deg)" },
+        // Pulse glow animation for neon effects
+        "pulse-glow": {
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 5px #ff69b4" },
+          "50%": { opacity: "0.7", boxShadow: "0 0 20px #ff69b4, 0 0 30px #ff69b4" },
+        },
+        "pulse-glow-secondary": {
+          "0%, 100%": { opacity: "1", boxShadow: "0 0 5px #03a9f4" },
+          "50%": { opacity: "0.7", boxShadow: "0 0 20px #03a9f4, 0 0 30px #03a9f4" },
+        },
+        "border-beam": {
+          "100%": { "offset-distance": "100%" },
         },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "pulse-gentle": "pulse-gentle 2s infinite ease-in-out",
-        wave: "wave 1.5s infinite",
+        "pulse-glow": "pulse-glow 10s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "pulse-glow-secondary": "pulse-glow-secondary 10s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
+        "slow-spin": "slow-spin 6s linear infinite",
       },
     },
   },
-  plugins: [tailwindAnimations],
+  plugins: [tailwindAnimations, require("@tailwindcss/typography")], // Ensure typography plugin is present
 } satisfies Config;

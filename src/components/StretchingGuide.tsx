@@ -1,9 +1,9 @@
 
 import React from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { useTimer } from "@/contexts/TimerContext";
+import { ChevronRight, ChevronLeft, Zap } from "lucide-react";
 
 const stretchingExercises = [
   {
@@ -49,42 +49,77 @@ const StretchingGuide: React.FC = () => {
   }
   
   return (
-    <Card className="w-full max-w-md mx-auto bg-white shadow-lg rounded-xl overflow-hidden border-t-4 border-stretch-success mb-4">
-      <CardHeader className="bg-stretch-light">
-        <CardTitle className="text-xl text-center text-stretch-dark">
-          Time to Stretch! ({Math.ceil(remainingTime / 60)} min left)
-        </CardTitle>
-      </CardHeader>
+    <div className="w-full">
+      {/* Exercise Progress Indicator */}
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center">
+          <Zap className="h-5 w-5 text-accent mr-2" />
+          <span className="text-muted-foreground font-mono text-sm">
+            EXERCISE <span className="text-accent font-['Orbitron']">{exerciseIndex + 1}</span> / {stretchingExercises.length}
+          </span>
+        </div>
+        <div className="flex items-center space-x-2">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 rounded-full bg-card/50 border border-accent/20 hover:bg-card/70 hover:border-accent/40"
+            disabled={exerciseIndex === 0}
+          >
+            <ChevronLeft className="h-4 w-4 text-accent" />
+          </Button>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="h-8 w-8 rounded-full bg-card/50 border border-accent/20 hover:bg-card/70 hover:border-accent/40"
+            disabled={exerciseIndex === stretchingExercises.length - 1}
+          >
+            <ChevronRight className="h-4 w-4 text-accent" />
+          </Button>
+        </div>
+      </div>
       
-      <CardContent className="p-6">
-        <h3 className="text-xl font-bold mb-2 text-stretch-primary">
-          {currentExercise.name}
-        </h3>
+      {/* Main Exercise Card */}
+      <div className="relative bg-card/30 backdrop-blur-sm border border-accent/30 rounded-xl overflow-hidden shadow-lg">
+        {/* Glowing border effect */}
+        <div className="absolute top-0 left-0 w-1 h-full bg-accent" />
         
-        <p className="text-gray-700 mb-4">
-          {currentExercise.description}
-        </p>
-        
-        <div className="mb-2 text-sm text-right text-stretch-neutral">
-          Exercise {exerciseIndex + 1} of {stretchingExercises.length}
+        {/* Exercise Header */}
+        <div className="p-6 border-b border-accent/20">
+          <h3 className="text-2xl font-bold mb-2 font-['Orbitron'] tracking-wide text-white">
+            <span className="text-accent">&gt;</span> {currentExercise.name}
+          </h3>
+          
+          <Progress 
+            value={progress % 20 * 5} 
+            className="h-1.5 mt-4" 
+            style={{
+              background: 'rgba(255,255,255,0.1)',
+            }}
+          />
         </div>
         
-        <Progress 
-          value={progress % 20 * 5} 
-          className="h-2 mb-6 animate-progress" 
-          indicatorColor="bg-stretch-success"
-        />
-      </CardContent>
-      
-      <CardFooter className="flex justify-end bg-gray-50 p-4">
-        <Button 
-          onClick={completeStretching}
-          className="bg-stretch-primary hover:bg-stretch-secondary"
-        >
-          Finish Stretching
-        </Button>
-      </CardFooter>
-    </Card>
+        {/* Exercise Content */}
+        <div className="p-6">
+          <div className="flex items-start space-x-4">
+            <div className="flex-1">
+              <p className="text-muted-foreground mb-6 leading-relaxed">
+                {currentExercise.description}
+              </p>
+              
+              {/* Cyberpunk-styled tips */}
+              <div className="bg-card/50 border border-accent/20 rounded-md p-4 mb-4">
+                <h4 className="text-sm font-bold uppercase tracking-wider text-accent mb-2 flex items-center">
+                  <Zap className="h-4 w-4 mr-1" /> OPTIMIZATION TIP
+                </h4>
+                <p className="text-xs text-muted-foreground">
+                  Perform this stretch slowly and mindfully. Focus on your breathing to maximize effectiveness.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

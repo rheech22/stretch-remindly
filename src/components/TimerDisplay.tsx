@@ -1,9 +1,7 @@
 import React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useTimer } from "@/contexts/TimerContext";
 import { Button } from "@/components/ui/button";
-import { AlarmClock, Play, Pause, RotateCcw } from "lucide-react";
+import { RotateCcw, Play, Pause } from "lucide-react";
 
 const TimerDisplay: React.FC = () => {
   const {
@@ -26,66 +24,70 @@ const TimerDisplay: React.FC = () => {
   };
 
   return (
-    <Card className="w-full max-w-md bg-white shadow-lg rounded-xl overflow-hidden transition-all hover:shadow-xl">
-      <CardContent className="p-6">
-        <div className="mb-4 flex items-center justify-center">
-          <AlarmClock
-            className={`h-8 w-8 text-stretch-primary ${
-              isRunning ? "animate-pulse-gentle" : ""
-            }`}
-          />
-          <h2 className="text-2xl font-bold ml-2 text-stretch-dark">
-            {isStretching ? "Stretching Time" : "Work Timer"}
-          </h2>
+    <div className="flex flex-col items-center">
+      {/* Cyberpunk title with glowing effect */}
+      <h1 className="text-3xl font-bold mb-2 text-center font-['Orbitron'] tracking-wider">
+        <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary via-white to-secondary">
+          STRETCH REMINDLY
+        </span>
+      </h1>
+      
+      {/* Status indicator */}
+      <div className="mb-6">
+        <span className={`
+          inline-block px-4 py-1 rounded-full text-xs uppercase tracking-widest font-bold
+          ${isStretching 
+            ? "bg-accent text-accent-foreground animate-pulse" 
+            : "bg-secondary text-secondary-foreground animate-pulse"}
+          border border-white/20 shadow-lg
+        `}>
+          {isStretching ? "STRETCH TIME" : "WORK TIME"}
+        </span>
+      </div>
+
+      {/* Timer display with cyberpunk styling */}
+      <div className={`
+        relative w-64 h-64 rounded-full flex items-center justify-center
+        ${isStretching 
+          ? "bg-accent/10 border-accent/50" 
+          : "bg-secondary/10 border-secondary/50"}
+        border-4 shadow-lg
+        before:content-[''] before:absolute before:inset-0 before:rounded-full 
+        before:border-4 before:border-t-transparent before:border-l-transparent
+        ${isStretching 
+          ? "before:border-r-accent before:border-b-accent" 
+          : "before:border-r-secondary before:border-b-secondary"}
+        before:animate-slow-spin
+      `}>
+        {/* Inner circle with time */}
+        <div className={`
+          w-52 h-52 rounded-full flex items-center justify-center
+          bg-background border-2
+          ${isStretching 
+            ? "border-accent/30 text-accent" 
+            : "border-secondary/30 text-secondary"}
+          shadow-inner
+        `}>
+          <div className="text-center">
+            <div className="font-['Orbitron'] text-5xl font-bold tracking-wider">
+              {formatTime(remainingTime)}
+            </div>
+            <div className="mt-2 text-xs uppercase tracking-widest opacity-70">
+              {isStretching ? "stretch" : "until break"}
+            </div>
+          </div>
         </div>
+      </div>
 
-        <div className="text-5xl font-bold text-center my-6 text-stretch-primary">
-          {formatTime(remainingTime)}
-        </div>
+      {/* Motivational text with cyberpunk styling */}
+      <p className="mt-6 text-center text-sm text-foreground/70 italic max-w-xs">
+        {isStretching 
+          ? "Stand up and stretch your body. Your cybernetic enhancements need maintenance." 
+          : "Keep working. Optimize your performance. Break incoming."}
+      </p>
 
-        <Progress
-          value={progress}
-          className="h-2 mb-6 animate-progress"
-          indicatorColor={
-            isStretching ? "bg-stretch-success" : "bg-stretch-primary"
-          }
-        />
-
-        <div className="flex justify-center space-x-4 mt-4">
-          <Button
-            variant="outline"
-            size="icon"
-            className="timer-button"
-            onClick={resetTimer}
-            aria-label="Reset Timer"
-          >
-            <RotateCcw className="h-5 w-5 text-stretch-neutral" />
-          </Button>
-
-          {isRunning ? (
-            <Button
-              variant="outline"
-              size="icon"
-              className="timer-button"
-              onClick={pauseTimer}
-              aria-label="Pause Timer"
-            >
-              <Pause className="h-5 w-5 text-stretch-danger" />
-            </Button>
-          ) : (
-            <Button
-              variant="outline"
-              size="icon"
-              className="timer-button"
-              onClick={startTimer}
-              aria-label="Start Timer"
-            >
-              <Play className="h-5 w-5 text-stretch-success" />
-            </Button>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+      {/* Control buttons - moved to TimerControls component */}
+    </div>
   );
 };
 

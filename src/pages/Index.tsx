@@ -1,10 +1,13 @@
-import { useTimer } from "@/contexts/TimerContext"; // Removed TimerProvider, only useTimer remains
+import { useTimer } from "@/contexts/TimerContext"; 
 import TimerDisplay from "@/components/TimerDisplay";
 import StretchNotification from "@/components/StretchNotification";
-import { Link, useNavigate } from 'react-router-dom';
+import TimerControls from "../components/TimerControls";
+import { TimerProvider } from "@/contexts/TimerContext";
+import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import { Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
-// Merged IndexContent into Index component
 const Index = () => {
   const { isStretching } = useTimer();
   const navigate = useNavigate();
@@ -16,35 +19,30 @@ const Index = () => {
   }, [isStretching, navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-stretch-light p-4">
-      <div className="w-full max-w-md">
-        <header className="mb-8 text-center">
-          <h1 className="text-3xl font-bold text-stretch-primary mb-2">
-            Stretch Remindly
-          </h1>
-          <p className="text-stretch-neutral">
-            Create a healthy work routine with regular stretching
-          </p>
-        </header>
-
-        <StretchNotification />
-        <TimerDisplay />
-        
-        {/* Added link to settings page */}
-        <div className="mt-4 text-center">
-          <Link to="/settings" className="text-stretch-primary hover:underline">
-            Settings
-          </Link>
+    <TimerProvider>
+      <div className="flex flex-col items-center justify-center min-h-screen p-8 space-y-12">
+        <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
+          <TimerDisplay />
         </div>
 
-        <footer className="mt-8 text-center text-sm text-stretch-neutral">
-          <p> 2025 Stretch Remindly - We care about your health</p>
-        </footer>
+        <div className="flex flex-col items-center justify-center w-full max-w-xs mx-auto">
+          <TimerControls />
+        </div>
+        
+        {/* Settings Button */}
+        <div className="absolute top-4 right-4">
+          <Button 
+            onClick={() => navigate('/settings')} 
+            variant="ghost" 
+            size="icon"
+            className="rounded-full w-12 h-12 border border-primary/30 hover:border-primary/60 transition-all duration-300 bg-transparent"
+          >
+            <Settings className="h-6 w-6 text-primary" />
+          </Button>
+        </div>
       </div>
-    </div>
+    </TimerProvider>
   );
 };
-
-// Removed the TimerProvider wrapping part
 
 export default Index;

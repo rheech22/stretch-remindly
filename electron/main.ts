@@ -45,13 +45,24 @@ const currentDir = path.dirname(fileURLToPath(import.meta.url));
 
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 900,
+    height: 700,
     webPreferences: {
       preload: path.join(currentDir, "preload.js"), // Use currentDir
       nodeIntegration: false,
       contextIsolation: true,
     },
+    // Modern window styling
+    frame: false, // Frameless window
+    titleBarStyle: 'hidden',
+    transparent: false, // Not using full transparency for better performance
+    backgroundColor: '#0a0a2a', // Dark background matching our cyberpunk theme
+    vibrancy: 'under-window', // macOS vibrancy effect
+    visualEffectState: 'active',
+    roundedCorners: true,
+    hasShadow: true,
+    minWidth: 700,
+    minHeight: 600,
     // show: false
   });
 

@@ -4,65 +4,60 @@
 
 @layer base {
   :root {
-    --background: 250 33% 98%;
-    --foreground: 240 10% 3.9%;
+    /* Cyberpunk HSL Variables */
+    --background: 240 50% 8%; /* Dark Blue */
+    --foreground: 210 40% 98%; /* Almost White */
 
-    --card: 0 0% 100%;
-    --card-foreground: 240 10% 3.9%;
+    --card: 240 40% 12%; /* Darker Card */
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 240 10% 3.9%;
+    --popover: 240 50% 8%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 260 60% 55%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 330 100% 70%; /* Neon Pink */
+    --primary-foreground: 330 100% 98%; /* Lighter Pink/White */
 
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
+    --secondary: 195 100% 50%; /* Electric Blue/Cyan */
+    --secondary-foreground: 195 100% 98%; /* Lighter Blue/White */
 
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
+    --muted: 240 20% 30%; /* Muted Dark Grey/Blue */
+    --muted-foreground: 210 20% 75%; /* Muted Light Grey */
 
-    --accent: 250 85% 96%;
-    --accent-foreground: 240 5.9% 10%;
+    --accent: 270 100% 70%; /* Vivid Purple */
+    --accent-foreground: 270 100% 98%; /* Lighter Purple/White */
 
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84% 60%; /* Standard Red */
     --destructive-foreground: 0 0% 98%;
 
-    --border: 240 5.9% 90%;
-    --input: 240 5.9% 90%;
-    --ring: 260 60% 55%;
+    --border: 195 100% 50%; /* Use Secondary/Cyan for borders */
+    --input: 240 30% 20%; /* Slightly lighter dark for input background */
+    --ring: 330 100% 70%; /* Use Primary/Pink for focus rings */
 
-    --radius: 0.5rem;
+    --radius: 0.5rem; /* Keep or make sharper (e.g., 0.3rem) */
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 260 60% 55%;
-    --primary-foreground: 0 0% 98%;
-
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
-    --destructive: 0 62.8% 30.6%;
+    /* Same variables for dark mode in this cyberpunk theme */
+    --background: 240 50% 8%;
+    --foreground: 210 40% 98%;
+    --card: 240 40% 12%;
+    --card-foreground: 210 40% 98%;
+    --popover: 240 50% 8%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 330 100% 70%;
+    --primary-foreground: 330 100% 98%;
+    --secondary: 195 100% 50%;
+    --secondary-foreground: 195 100% 98%;
+    --muted: 240 20% 30%;
+    --muted-foreground: 210 20% 75%;
+    --accent: 270 100% 70%;
+    --accent-foreground: 270 100% 98%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
-
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 260 60% 55%;
+    --border: 195 100% 50%;
+    --input: 240 30% 20%;
+    --ring: 330 100% 70%;
+    --radius: 0.5rem;
   }
 }
 
@@ -70,11 +65,17 @@
   * {
     @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
+    /* Add a futuristic font if available, otherwise fallback */
+    font-family: 'Orbitron', sans-serif; /* Example: Requires importing Orbitron font */
+    /* Fallback font */
+    /* font-family: ui-sans-serif, system-ui, sans-serif; */
   }
 }
+
+/* Import Orbitron font (example using Google Fonts) */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
 @layer components {
   .timer-button {
