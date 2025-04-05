@@ -3,11 +3,10 @@ import React, {
   useState,
   useEffect,
   useContext,
-  useRef,
   useCallback,
 } from "react";
 import { toast } from "@/components/ui/use-toast";
-import { Settings } from "@/types/electron";
+import { Settings, StretchingTip } from "@/types/electron";
 import {
   isElectron,
   getElectronSettings,
@@ -15,6 +14,7 @@ import {
   showNativeNotification,
   registerTimerListeners,
   showMainWindow,
+  getStretchingTips,
 } from "@/utils/electronUtils";
 
 type TimerContextType = {
@@ -32,6 +32,7 @@ type TimerContextType = {
   skipToStretching: () => void;
   completeStretching: () => void;
   progress: number;
+  tips: StretchingTip[];
 };
 
 const defaultWorkDuration = 1;
@@ -52,6 +53,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isRunning, setIsRunning] = useState<boolean>(false);
   const [isStretching, setIsStretching] = useState<boolean>(false);
   const [progress, setProgress] = useState<number>(0);
+  const [tips, setTips] = useState<StretchingTip[]>([]);
 
   // Function to load settings and initialize state
   const initializeSettings = useCallback(async () => {
@@ -60,6 +62,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
       console.log("Loaded settings in context:", loadedSettings);
       setWorkDurationState(loadedSettings.workDuration);
       setStretchDurationState(loadedSettings.stretchDuration);
+
       // Set initial remaining time based on loaded work duration
       // Only reset if timer is not currently running to avoid disrupting active session
       if (!isRunning) {
@@ -68,6 +71,11 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
       }
     }
   }, [isRunning]); // Depend on isRunning to avoid resetting active timer
+
+  // Load tips when the component mounts
+  useEffect(() => {
+    getStretchingTips().then(setTips);
+  }, []);
 
   // Load settings when the component mounts
   useEffect(() => {
@@ -259,6 +267,7 @@ export const TimerProvider: React.FC<{ children: React.ReactNode }> = ({
         skipToStretching,
         completeStretching,
         progress,
+        tips,
       }}
     >
       {children}

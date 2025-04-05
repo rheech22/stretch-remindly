@@ -1,4 +1,4 @@
-import { Settings } from "@/types/electron";
+import type { Settings, StretchingTip } from "@/types/electron";
 
 export const isElectron = (): boolean => !!window.electron;
 
@@ -79,4 +79,19 @@ export const registerTimerListeners = (
 export const changeWindowHeight = (height: number) => {
   if (!isElectron()) return;
   window.electron.setWindowHeight(height);
+};
+
+export const getStretchingTips = async (): Promise<StretchingTip[]> => {
+  if (!isElectron()) {
+    console.warn("Not running in Electron, returning empty tips.");
+    return [];
+  }
+  try {
+    const tips = await window.electron.getStretchingTips();
+    console.log("Tips loaded from main:", tips);
+    return tips;
+  } catch (error) {
+    console.error("Failed to get tips from main:", error);
+    return [];
+  }
 };

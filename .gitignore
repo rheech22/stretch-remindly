@@ -1,20 +1,3 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-
-node_modules
-dist
-dist-ssr
-dist-electron
-*.local
-
-release/*
-
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -25,3 +8,23 @@ release/*
 *.njsproj
 *.sln
 *.sw?
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Local Only
+node_modules
+dist
+dist-ssr
+dist-electron
+*.local
+release/*
+
+# Secrets
+.env

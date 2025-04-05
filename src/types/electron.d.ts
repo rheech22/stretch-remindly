@@ -5,6 +5,13 @@ export interface Settings {
   runAtStartup: boolean;
 }
 
+export interface StretchingTip {
+  created_at: string;
+  description: string | null;
+  id: number;
+  title: string;
+}
+
 declare global {
   interface Window {
     electron: ElectronAPI;
@@ -13,6 +20,7 @@ declare global {
 
 export interface ElectronAPI {
   getSettings: () => Promise<Settings>;
+  getStretchingTips: () => Promise<StretchingTip[]>;
   saveSettings: (settings: Partial<Settings>) => Promise<boolean>;
   showNotification: (options: { title: string; body: string }) => void;
   showWindow: () => void;

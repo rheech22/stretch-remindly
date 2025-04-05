@@ -2,6 +2,7 @@ import { contextBridge, ipcRenderer } from "electron";
 
 interface ElectronAPI {
   getSettings: () => Promise<unknown>;
+  getStretchingTips: () => Promise<unknown>;
   saveSettings: (settings: unknown) => Promise<boolean>;
   showNotification: (options: { title: string; body: string }) => void;
   showWindow: () => void;
@@ -14,6 +15,7 @@ interface ElectronAPI {
 
 contextBridge.exposeInMainWorld("electron", {
   getSettings: () => ipcRenderer.invoke("get-settings"),
+  getStretchingTips: () => ipcRenderer.invoke("get-stretching-tips"),
   saveSettings: (settings: unknown) =>
     ipcRenderer.invoke("save-settings", settings),
   showNotification: (options: { title: string; body: string }) => {

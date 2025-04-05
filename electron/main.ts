@@ -14,6 +14,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import log from "electron-log"; // Revert back to just 'electron-log'
 import Store from "electron-store"; // Revert back to import
+import { stretchingTips } from "./adapters/tips.js";
 
 // Define the shape of the settings object
 interface Settings {
@@ -174,6 +175,10 @@ ipcMain.handle("get-settings", () => {
     startMinimized: store.get("startMinimized"),
     runAtStartup: store.get("runAtStartup"),
   };
+});
+
+ipcMain.handle("get-stretching-tips", async () => {
+  return await stretchingTips.get();
 });
 
 ipcMain.handle("save-settings", (_, settings: Partial<Settings>) => {

@@ -2,48 +2,12 @@ import React from "react";
 import { useTimer } from "@/contexts/TimerContext";
 import { Zap } from "lucide-react";
 
-const stretchingExercises = [
-  {
-    name: "Neck Stretches",
-    description:
-      "Gently tilt your head toward each shoulder, holding for 5 seconds.",
-    imagePath: "/neck-stretch.svg",
-  },
-  {
-    name: "Shoulder Rolls",
-    description:
-      "Roll your shoulders backward and forward in a circular motion.",
-    imagePath: "/shoulder-roll.svg",
-  },
-  {
-    name: "Wrist and Finger Stretches",
-    description:
-      "Extend your arm, gently pull fingers back, then down. Repeat with each hand.",
-    imagePath: "/wrist-stretch.svg",
-  },
-  {
-    name: "Seated Spinal Twist",
-    description:
-      "Sit straight, place your right hand on your left knee, twist to the left. Repeat on the other side.",
-    imagePath: "/spinal-twist.svg",
-  },
-  {
-    name: "Arm and Shoulder Stretch",
-    description:
-      "Raise one arm overhead, bend elbow, reach down back. Use other hand to gently pull elbow. Repeat on other arm.",
-    imagePath: "/arm-stretch.svg",
-  },
-];
-
 const StretchingGuide: React.FC = () => {
-  const { isStretching, progress } = useTimer();
+  const { isStretching, progress, tips } = useTimer();
 
-  const exerciseIndex = Math.min(
-    Math.floor(progress / 20),
-    stretchingExercises.length - 1,
-  );
+  const exerciseIndex = Math.min(Math.floor(progress / 20), tips.length - 1);
 
-  const currentExercise = stretchingExercises[exerciseIndex];
+  const currentExercise = tips[exerciseIndex];
 
   if (!isStretching) {
     return null;
@@ -57,28 +21,28 @@ const StretchingGuide: React.FC = () => {
           <span className="text-muted-foreground text-sm">
             TIP{"  "}
             <span className="text-accent">{exerciseIndex + 1}</span> /{" "}
-            {stretchingExercises.length}
+            {tips.length}
           </span>
         </div>
         {/*
-		<div className="flex items-center space-x-2 no-drag">
-		  <Button
-		    variant="ghost"
-		    size="icon"
-		    className="h-8 w-8 rounded-full bg-card/50 border border-accent/20 hover:bg-card/70 hover:border-accent/40"
-		    disabled={exerciseIndex === 0}
-		  >
-		    <ChevronLeft className="h-4 w-4 text-accent" />
-		  </Button>
-		  <Button
-		    variant="ghost"
-		    size="icon"
-		    className="h-8 w-8 rounded-full bg-card/50 border border-accent/20 hover:bg-card/70 hover:border-accent/40"
-		    disabled={exerciseIndex === stretchingExercises.length - 1}
-		  >
-		    <ChevronRight className="h-4 w-4 text-accent" />
-		  </Button>
-		</div>
+	<div className="flex items-center space-x-2 no-drag">
+	  <Button
+	    variant="ghost"
+	    size="icon"
+	    className="h-8 w-8 rounded-full bg-card/50 border border-accent/20 hover:bg-card/70 hover:border-accent/40"
+	    disabled={exerciseIndex === 0}
+	  >
+	    <ChevronLeft className="h-4 w-4 text-accent" />
+	  </Button>
+	  <Button
+	    variant="ghost"
+	    size="icon"
+	    className="h-8 w-8 rounded-full bg-card/50 border border-accent/20 hover:bg-card/70 hover:border-accent/40"
+	    disabled={exerciseIndex === stretchingExercises.length - 1}
+	  >
+	    <ChevronRight className="h-4 w-4 text-accent" />
+	  </Button>
+	</div>
 	*/}
       </div>
       <div className="relative bg-card/30 backdrop-blur-sm border border-accent/30 rounded-xl overflow-hidden shadow-lg">
@@ -86,7 +50,7 @@ const StretchingGuide: React.FC = () => {
 
         <div className="p-6 border-b border-accent/20">
           <h3 className="text-2xl font-bold mb-2 font-['Orbitron'] tracking-wide text-white">
-            <span className="text-accent">&gt;</span> {currentExercise.name}
+            <span className="text-accent">&gt;</span> {currentExercise.title}
           </h3>
         </div>
 

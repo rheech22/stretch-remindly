@@ -3,7 +3,7 @@
   // "extends": "./tsconfig.json",
   "compilerOptions": {
     // --- Key changes for Preload ---
-    "module": "CommonJS",         // Compile to CommonJS
+    "module": "CommonJS", // Compile to CommonJS
     "moduleResolution": "Node", // Node resolution for CommonJS
 
     // --- Options likely needed (copy from tsconfig.electron.json or base) ---
@@ -14,7 +14,7 @@
     "allowSyntheticDefaultImports": true,
     "strict": true,
     "skipLibCheck": true
-     // Remove moduleDetection if not applicable/needed for CJS
+    // Remove moduleDetection if not applicable/needed for CJS
   },
   "include": ["electron/preload.ts"], // IMPORTANT: Only include preload.ts
   "exclude": ["node_modules"]
