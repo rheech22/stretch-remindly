@@ -137,9 +137,6 @@ const TimerSettings: React.FC = () => {
             />
             <div className="absolute -bottom-1 left-0 right-0 flex justify-between text-xs text-muted-foreground">
               <span>1</span>
-              <span>15</span>
-              <span>30</span>
-              <span>60</span>
               <span>120</span>
             </div>
           </div>
@@ -167,7 +164,7 @@ const TimerSettings: React.FC = () => {
             <Slider
               id="stretch-duration"
               min={1}
-              max={15}
+              max={20}
               step={1}
               value={[stretchDurationInput]}
               onValueChange={handleStretchDurationChange}
@@ -177,9 +174,7 @@ const TimerSettings: React.FC = () => {
             />
             <div className="absolute -bottom-1 left-0 right-0 flex justify-between text-xs text-muted-foreground ">
               <span>1</span>
-              <span>5</span>
-              <span>10</span>
-              <span>15</span>
+              <span>20</span>
             </div>
           </div>
         </div>
