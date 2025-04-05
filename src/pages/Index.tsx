@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { changeWindowHeight } from "@/utils/electronUtils";
 
 const Index = () => {
   const { isStretching, isRunning } = useTimer();
@@ -13,11 +14,12 @@ const Index = () => {
   useEffect(() => {
     if (isStretching) {
       navigate("/stretching");
+      changeWindowHeight(1200);
     }
   }, [isStretching, navigate]);
 
   return (
-    <div className="flex flex-col items-center justify-center p-8 space-y-12">
+    <div className="flex flex-col items-center min-h-full justify-center p-8 pt-[80px] space-y-12">
       <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
         <TimerDisplay />
       </div>
@@ -38,6 +40,13 @@ const Index = () => {
           </Button>
         </div>
       )}
+
+      <footer className="mt-12 text-center text-xs text-muted-foreground">
+        <p className="tracking-wide">
+          © 2025 <span className="text-accent">STRETCH_REMINDLY</span> //
+          HEALTH_OPTIMIZATION_SYSTEM
+        </p>
+      </footer>
     </div>
   );
 };

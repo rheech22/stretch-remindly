@@ -51,21 +51,6 @@ const TimerControls: React.FC = () => {
           </Button>
         )}
       </div>
-
-      <div className="text-center text-sm tracking-wider uppercase">
-        <span
-          className={`
-          px-3 py-1 rounded 
-          ${
-            isRunning
-              ? "bg-primary/20 text-primary animate-pulse"
-              : "bg-muted/30 text-muted-foreground"
-          }
-        `}
-        >
-          {isRunning ? "WORK IN PROGRESS" : "TIMER PAUSED"}
-        </span>
-      </div>
     </div>
   );
 };

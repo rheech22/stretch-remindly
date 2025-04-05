@@ -96,7 +96,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
         "pulse-glow": "pulse-glow 10s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "pulse-glow-secondary":
-          "pulse-glow-secondary 10s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+          "pulse-glow-secondary 20s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "border-beam": "border-beam calc(var(--duration)*1s) infinite linear",
         "slow-spin": "slow-spin 6s linear infinite",
       },

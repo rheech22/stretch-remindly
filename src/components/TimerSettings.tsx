@@ -33,8 +33,8 @@ const TimerSettings: React.FC = () => {
       if (isElectron()) {
         try {
           const settings = await getElectronSettings();
-          setWorkDurationInput(settings.workDuration / 60); // Convert seconds to minutes
-          setStretchDurationInput(settings.stretchDuration / 60); // Convert seconds to minutes
+          setWorkDurationInput(settings.workDuration / 60);
+          setStretchDurationInput(settings.stretchDuration / 60);
         } catch (error) {
           console.error("Failed to load settings in component:", error);
         }
@@ -184,7 +184,6 @@ const TimerSettings: React.FC = () => {
           </div>
         </div>
 
-        {/* Save Button with cyberpunk styling */}
         <Button
           onClick={handleSave}
           className="w-full bg-primary hover:bg-primary/90 text-white font-bold py-3 rounded-md border border-white/20 shadow-md transition-all duration-300 uppercase tracking-wider font-['Orbitron'] group no-drag"

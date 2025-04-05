@@ -46,7 +46,8 @@ const currentDir = path.dirname(fileURLToPath(import.meta.url));
 const createWindow = (): void => {
   mainWindow = new BrowserWindow({
     width: 500,
-    height: 700,
+    height: 786,
+    useContentSize: true,
     webPreferences: {
       preload: path.join(currentDir, "preload.js"), // Use currentDir
       nodeIntegration: false,
@@ -210,6 +211,23 @@ ipcMain.on("minimize-window", () => {
 ipcMain.on("close-window", () => {
   if (mainWindow) {
     mainWindow.close();
+  }
+});
+
+// IPC listener for resizing the window height
+ipcMain.on("set-window-height", (_event, height: number) => {
+  if (mainWindow && !mainWindow.isDestroyed()) {
+    const currentSize = mainWindow.getSize();
+    const currentWidth = currentSize[0]; // Maintain current width or use WINDOW_WIDTH
+    log.info(
+      `[IPC] Received set-window-height: Resizing to ${currentWidth}x${height}`,
+    );
+    // Set the size, the third argument 'true' enables smooth animation
+    mainWindow.setSize(currentWidth, height, false);
+  } else {
+    log.warn(
+      `[IPC] Received set-window-height (${height}px) but mainWindow is not available.`,
+    );
   }
 });
 

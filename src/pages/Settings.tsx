@@ -30,6 +30,13 @@ const SettingsPage = () => {
         </header>
         <TimerSettings />
       </div>
+
+      <footer className="mt-12 text-center text-xs text-muted-foreground">
+        <p className="tracking-wide">
+          © 2025 <span className="text-accent">STRETCH_REMINDLY</span> //
+          HEALTH_OPTIMIZATION_SYSTEM
+        </p>
+      </footer>
     </div>
   );
 };
