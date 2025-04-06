@@ -60,7 +60,7 @@ jobs:
             exit 1
           fi
           echo "Found DMG file: $dmg_file"
-          s3_key="latest.dmg"
+          s3_key="streth-remindly-latest.dmg"
           if [ -z "$S3_BUCKET_NAME" ]; then
             echo "Error: S3_BUCKET_NAME secret is not set."
             exit 1
