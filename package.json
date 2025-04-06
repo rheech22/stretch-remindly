@@ -3,7 +3,7 @@
   "description": "Stretch reminder application",
   "author": "rheech22 <rheech22@gmail.com>",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
   "exports": "./dist-electron/main.js",
   "main": "dist-electron/main.js",
