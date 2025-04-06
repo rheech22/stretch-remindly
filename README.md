@@ -1,37 +1,72 @@
-# Stretch Remindly
+# 🧘 Stretch Remindly
 
-This document provides instructions on how to run and build the Stretch Reminder desktop application with Electron.
+| Intro                                   | Stretching                                         | Setting                                      |
+| --------------------------------------- | -------------------------------------------------- | -------------------------------------------- |
+| ![intro](./screenshots/main-screen.png) | ![stretching](./screenshots/stretching-screen.png) | ![setting](./screenshots/setting-screen.png) |
 
-## Development
+**Stretch Remindly** is a simple yet effective desktop app for macOS that reminds you to stretch throughout the day.
 
-To run the app in development mode, you need to:
+It’s designed for people (like me) who spend long hours in front of a screen to stay mindful of their joint health 💪
 
+Built with **Supabase**, **Electron**, and **Typescript** — with lots of good vibes coding ⚡️
+
+🔗 Landing Page: [https://www.stretch-remindly.com/](https://www.stretch-remindly.com/)
+
+---
+
+## ✨ Features
+
+- ⏰ Stretching reminders at user-defined intervals
+- 🧘‍♀️ Stretching timer during break time
+- 📖 Simple stretching guide
+- 🍏 macOS support only (for now)
+
+---
+
+## 🚧 Upcoming Features
+
+- 📊 History tracking and dashboard
+- 🧘‍♂️ More detailed stretching guides
+- 🛠️ Custom stretching routine builder
+- 🔊 Voice guidance during stretches
+
+---
+
+## 🛠️ Build & Run Locally (macOS only)
+
+You can build the app yourself from this codebase. Follow the steps below:
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/rheech22/stretch-remindly.git
+cd stretch-remindly
 ```
-pnpm dev
+
+### 2. Install dependencies
+
+```bash
+pnpm install
 ```
 
-## Building for Production
+### 3. Build the app
 
-To build the app for production:
-
-1. Build the React app:
-
-```
-pnpm build
-```
-
-2. Package the Electron app:
-
-```
+```bash
 pnpm electron:build
 ```
 
-## Usage
+This will generate the `.dmg` installer in the `release` folder.
 
-The desktop app includes features not available in the web version:
+### 4. Run the installer
 
-- System tray integration with quick access to timer controls
-- Native desktop notifications
-- Automatic startup option
-- Minimize to tray functionality
-- Persistent settings storage
+Navigate to the dist folder and open the generated `.dmg` file to install the app on your Mac.
+
+---
+
+## ⚠️ Notice
+
+You can also download a prebuilt version from the landing page,
+but since the app is not code-signed yet, you might see warnings or need to allow the app manually in your system settings.
+To avoid this, we recommend building it yourself for now.
+
+---
