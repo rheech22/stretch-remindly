@@ -16,24 +16,43 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: "npm"
 
-      - name: Install dependencies
-        run: npm install
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 8
+          run_install: false
 
-      - name: Build Electron app
-        run: npm run electron:build
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
+      - name: Install dependencies with pnpm
+        run: pnpm install
+
+      - name: Build Electron app with pnpm
+        run: pnpm run electron:build
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          aws-region: ${{ secrets.AWS_S3_REGION }}
 
       - name: Upload DMG to AWS S3 as latest.dmg
         env:
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+          S3_BUCKET_NAME: ${{ secrets.AWS_S3_BUCKET_NAME }}
         run: |
           dmg_file=$(find release -name '*.dmg' -print -quit)
           if [ -z "$dmg_file" ]; then
@@ -41,14 +60,10 @@ jobs:
             exit 1
           fi
           echo "Found DMG file: $dmg_file"
-
           s3_key="latest.dmg"
-
           if [ -z "$S3_BUCKET_NAME" ]; then
             echo "Error: S3_BUCKET_NAME secret is not set."
             exit 1
           fi
-
           echo "Uploading to S3 bucket: $S3_BUCKET_NAME as $s3_key"
-
           aws s3 cp "$dmg_file" "s3://${S3_BUCKET_NAME}/${s3_key}"
